@@ -11,6 +11,6 @@ package ma.ac.uir.medcare.medcare;
 public class MedCare {
 
     public static void main(String[] args) {
-        System.out.println("Bonjour Idriss");
+        System.out.println("Bonjour teeeeest");
     }
 }
