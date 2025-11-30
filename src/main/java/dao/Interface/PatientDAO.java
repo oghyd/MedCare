@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dao.Interface;
+//iyvuct
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.util.LinkedList;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import model.Patient;
+
 /**
  *
  * @author hhgyd
@@ -113,6 +115,8 @@ public class PatientDAO {
     }
     
     public boolean deletePatient(int idPatient){
+        int a;
+
         boolean delete = false;
                 
         String SQL = "DELETE FROM participants WHERE id = ?";
@@ -122,6 +126,7 @@ public class PatientDAO {
             
             pstm.setInt(1, idPatient);
 
+            
             int etat = pstm.executeUpdate();
             if (etat == 1) {
                 delete = true;
