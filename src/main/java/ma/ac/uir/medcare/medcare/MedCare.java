@@ -1,17 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package ma.ac.uir.medcare.medcare;
 
 /**
  *
- * @author hhgyd
+ * @author oghyd & idber
  */
 public class MedCare {
 
     public static void main(String[] args) {
        
-        System.out.println("Wa db normalement dkchi khddam");
+        System.out.println("Welcome to MedCare");
     }
 }
