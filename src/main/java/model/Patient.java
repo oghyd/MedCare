@@ -24,6 +24,8 @@ public class Patient {
     
     //auto id++ should be done on the DB
 
+    //iyvuct
+
     public Patient(String cneP, String prenomP, String nomP, String phoneP, int ageP) {
         this.cneP = cneP;
         this.prenomP = prenomP;

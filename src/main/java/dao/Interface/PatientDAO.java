@@ -115,7 +115,6 @@ public class PatientDAO {
     }
     
     public boolean deletePatient(int idPatient){
-        int a;
 
         boolean delete = false;
                 
