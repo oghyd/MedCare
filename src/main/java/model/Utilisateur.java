@@ -102,9 +102,22 @@ public class Utilisateur {
     }
     
     
-    
-    
-    
+    public boolean isAssistant() {
+        return role == Role.ASSISTANT;
+    }
+
+    public boolean isMedecin() {
+        return role == Role.MEDECIN;
+    }
+
+    public boolean isAdmin() {
+        return role == Role.ADMIN;
+    }
+
+    @Override
+    public String toString() {
+        return "Utilisateur{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", role=" + role + ", specialite=" + specialite + ", disponible=" + disponible + '}';
+    }
     
     
 }
