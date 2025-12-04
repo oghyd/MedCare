@@ -8,6 +8,6 @@ package dao.Interface;
  *
  * @author hhgyd
  */
-public class Consultation {
+public class ConsultationDAO {
     
 }
