@@ -6,7 +6,7 @@ package model;
  */
 public class Utilisateur {
         
-    private int id;
+    private int id; 
     private String nom;
     private String prenom;
     private String login;
