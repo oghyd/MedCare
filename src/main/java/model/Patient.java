@@ -16,11 +16,9 @@ import javax.swing.table.DefaultTableModel;
 public class Patient {
     
     private int idPatient;
-    private String cneP;
-    private String prenomP;
     private String nomP;
     private String phoneP;
-    private int ageP;
+    private String mailP;
     
     //auto id++ should be done on the DB
 

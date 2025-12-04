@@ -4,12 +4,10 @@
  */
 package dao.Interface;
 
-//iyvuct
-
-/**  
+/**
  *
  * @author hhgyd
  */
-public class Consultation {
+public class ConsultationDAO {
     
 }
