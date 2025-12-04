@@ -16,6 +16,7 @@ public class Utilisateur {
     //variables medecins
     private String specialite; // null for assistants
     private boolean disponible; //default boolean value is false
+    
 
     public Utilisateur() {
     }
@@ -28,15 +29,19 @@ public class Utilisateur {
     }
 
     //with specialité + disponible
-    public Utilisateur(int id, String nom, String prenom, Role role, String specialite, boolean disponible) {
+
+    public Utilisateur(int id, String nom, String prenom, String login, String password, Role role, String specialite, boolean disponible) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
+        this.login = login;
+        this.password = password;
         this.role = role;
         this.specialite = specialite;
         this.disponible = disponible;
     }
 
+    
     public int getId() {
         return id;
     }
@@ -116,7 +121,8 @@ public class Utilisateur {
 
     @Override
     public String toString() {
-        return "Utilisateur{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", role=" + role + ", specialite=" + specialite + ", disponible=" + disponible + '}';
+        return "Utilisateur{" + "id = " + id + ", nom = " + nom + ", prenom = " + prenom + ", role = " + role + 
+                ", specialite = " + specialite + ", disponible = " + disponible + " }";
     }
     
     
