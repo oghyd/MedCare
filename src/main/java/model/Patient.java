@@ -1,100 +1,109 @@
 package model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
-import java.util.Vector;
-import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author hhgyd
  */
 public class Patient {
     
-    private int idPatient;
-    private String nomP;
-    private String phoneP;
-    private String mailP;
+    private int id;
+    private String cne;
+    private String prenom;
+    private String nom;
+    private String phone;
+    private int age;
+    private String mail;
+
+    public Patient() {
+    }
+
     
-    //auto id++ should be done on the DB
-
-    //iyvuct
-
-    public Patient(String cneP, String prenomP, String nomP, String phoneP, int ageP) {
-        this.cneP = cneP;
-        this.prenomP = prenomP;
-        this.nomP = nomP;
-        this.phoneP = phoneP;
-        this.ageP = ageP;
-    }
-    
-    public Patient(int idPatient, String cneP, String prenomP, String nomP, String phoneP, int ageP) {
-        this.idPatient = idPatient;
-        this.cneP = cneP;
-        this.prenomP = prenomP;
-        this.nomP = nomP;
-        this.phoneP = phoneP;
-        this.ageP = ageP;
-    }
-
-
-    public int getIdPatient() {
-        return idPatient;
-    }
-
-    public String getCneP() {
-        return cneP;
-    }
-
-    public String getPrenomP() {
-        return prenomP;
-    }
-
-    public String getNomP() {
-        return nomP;
-    }
-
-    public String getPhoneP() {
-        return phoneP;
-    }
-
-    public int getAgeP() {
-        return ageP;
-    }
-
-    public void setIdPatient(int idPatient) {
-        this.idPatient = idPatient;
-    }
-
-    public void setCneP(String cneP) {
-        this.cneP = cneP;
-    }
-
-    public void setPrenomP(String prenomP) {
-        this.prenomP = prenomP;
-    }
-
-    public void setNomP(String nomP) {
-        this.nomP = nomP;
-    }
-
-    public void setPhoneP(String phoneP) {
-        this.phoneP = phoneP;
-    }
-
-    public void setAgeP(int ageP) {
-        this.ageP = ageP;
+    public Patient(String cne, String prenom, String nom, String phone, int age, String mail) {
+        this.cne = cne;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.phone = phone;
+        this.age = age;
+        this.mail = mail;
     }
     
-    @Override
+    public Patient(int id, String cne, String prenom, String nom, String phone, int age, String mail) {
+        this.id = id;
+        this.cne = cne;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.phone = phone;
+        this.age = age;
+        this.mail = mail;
+    }
+    
+
+    
+    // getters
+
+    public int getId() {
+        return id;
+    }
+
+    public String getCne() {
+        return cne;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+    
+    // setters 
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setCne(String cne) {
+        this.cne = cne;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    // toString
+    @Override 
     public String toString() {
-        return "Patient{ " + "ID patient = " + idPatient + ", cne = " + cneP 
-                + ", prénom = " + prenomP + ", nom = " + nomP + ", age = " + ageP + " }";
+        return "Patient{ " + "ID patient = " + id + ", cne = " + cne
+                + ", prénom = " + prenom + ", nom = " + nom + ", age = " + age + ", mail = " + mail + " }";
     }
-    
     
 }
