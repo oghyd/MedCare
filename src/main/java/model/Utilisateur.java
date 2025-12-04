@@ -14,18 +14,20 @@ public class Utilisateur {
     private Role role;
     
     //variables medecins
-    private String specialite; // null for assistants
+    private String specialite = null; // null for assistants
     private boolean disponible; //default boolean value is false
     
 
     public Utilisateur() {
     }
 
-    public Utilisateur(int id, String nom, String prenom, Role role) {
+    public Utilisateur(int id, String nom, String prenom, Role role, String specialite, boolean disponible) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.role = role;
+        this.specialite = specialite;
+        this.disponible = disponible;
     }
 
     //with specialité + disponible
