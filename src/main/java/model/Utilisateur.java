@@ -1,0 +1,110 @@
+package model;
+
+/**
+ *
+ * @author hhgyd
+ */
+public class Utilisateur {
+        
+    private int id;
+    private String nom;
+    private String prenom;
+    private String login;
+    private String password;
+    private Role role;
+    
+    //variables medecins
+    private String specialite; // null for assistants
+    private boolean disponible; //default boolean value is false
+
+    public Utilisateur() {
+    }
+
+    public Utilisateur(int id, String nom, String prenom, Role role) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.role = role;
+    }
+
+    //with specialité + disponible
+    public Utilisateur(int id, String nom, String prenom, Role role, String specialite, boolean disponible) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.role = role;
+        this.specialite = specialite;
+        this.disponible = disponible;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public String getSpecialite() {
+        return specialite;
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setSpecialite(String specialite) {
+        this.specialite = specialite;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
+    
+    
+    
+    
+    
+    
+    
+}
