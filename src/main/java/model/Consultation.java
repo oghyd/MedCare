@@ -2,6 +2,7 @@ package model;
 //iyvuct
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 /**
@@ -15,8 +16,8 @@ public class Consultation {
     private int idMedecin;
     private int idcategorie;
     
-    private Date dateConsultation;
-    private Date datePaiement;
+    private LocalDate dateConsultation;
+    private LocalDate datePaiement;
     private String description;
     private String status;
     private double prix;
@@ -26,7 +27,7 @@ public class Consultation {
     public Consultation() {
     }
 
-    public Consultation(int idPatient, int idMedecin, int idcategorie, Date dateConsultation, Date datePaiement, String description, String status, double prix, boolean paid) {
+    public Consultation(int idPatient, int idMedecin, int idcategorie, LocalDate dateConsultation, LocalDate datePaiement, String description, String status, double prix, boolean paid) {
         this.idPatient = idPatient;
         this.idMedecin = idMedecin;
         this.idcategorie = idcategorie;
@@ -38,7 +39,7 @@ public class Consultation {
         this.paid = paid;
     }
 
-    public Consultation(int idC, int idPatient, int idMedecin, int idcategorie, Date dateConsultation, Date datePaiement, String description, String status, double prix, boolean paid) {
+    public Consultation(int idC, int idPatient, int idMedecin, int idcategorie, LocalDate dateConsultation, LocalDate datePaiement, String description, String status, double prix, boolean paid) {
         this.idC = idC;
         this.idPatient = idPatient;
         this.idMedecin = idMedecin;
@@ -70,11 +71,11 @@ public class Consultation {
         return idcategorie;
     }
 
-    public Date getDateConsultation() {
+    public LocalDate getDateConsultation() {
         return dateConsultation;
     }
 
-    public Date getDatePaiement() {
+    public LocalDate getDatePaiement() {
         return datePaiement;
     }
 
@@ -113,11 +114,11 @@ public class Consultation {
         this.idcategorie = idcategorie;
     }
 
-    public void setDateConsultation(Date dateConsultation) {
+    public void setDateConsultation(LocalDate dateConsultation) {
         this.dateConsultation = dateConsultation;
     }
 
-    public void setDatePaiement(Date datePaiement) {
+    public void setDatePaiement(LocalDate datePaiement) {
         this.datePaiement = datePaiement;
     }
 
