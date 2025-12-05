@@ -62,7 +62,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         String SQL = "SELECT id, nom, prenom, role, specialite, disponible"
                    + " FROM Utilisateur " 
                    + " WHERE id = ? "
-                   + "AND role = 'MEDECIN'";
+                   + "AND role = 'MEDECIN'"; 
         
         try(java.sql.Connection conn = Connection.connect();
             PreparedStatement pstm = conn.prepareStatement(SQL)) {
