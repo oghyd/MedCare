@@ -21,6 +21,9 @@ public class Utilisateur {
     public Utilisateur() {
     }
 
+    
+    
+    //medecin
     public Utilisateur(int id, String nom, String prenom, Role role, String specialite, boolean disponible) {
         this.id = id;
         this.nom = nom;
@@ -30,6 +33,16 @@ public class Utilisateur {
         this.disponible = disponible;
     }
 
+    //assistant
+
+    public Utilisateur(int id, String nom, String prenom, Role role) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.role = role;
+    }
+    
+    
     //with specialité + disponible
 
     public Utilisateur(int id, String nom, String prenom, String login, String password, Role role, String specialite, boolean disponible) {
