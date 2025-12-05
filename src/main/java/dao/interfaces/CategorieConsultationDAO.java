@@ -18,13 +18,13 @@ public interface CategorieConsultationDAO {
     boolean createCategorieConsultation(CategorieConsultation categorie) throws SQLException;
 
     // READ
-    CategorieConsultation findById(int id) throws SQLException;
-    LinkedList<CategorieConsultation> findAll() throws SQLException;
+    CategorieConsultation findCategorieConsultationById(int id) throws SQLException;
+    LinkedList<CategorieConsultation> findAllCategorieConsultation() throws SQLException;
 
     // UPDATE
-    boolean update(CategorieConsultation categorie) throws SQLException;
+    boolean updateCategorieConsultation(CategorieConsultation categorie) throws SQLException;
 
     // DELETE
-    boolean delete(int id) throws SQLException;
+    boolean deleteCategorieConsultation(int id) throws SQLException;
     
 }
