@@ -68,12 +68,7 @@ public class PatientDAOImpl implements PatientDAO{
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    p.setCne(rs.getString("cne"));
-                    p.setPrenom(rs.getString("prenom"));
-                    p.setNom(rs.getString("nom"));
-                    p.setPrenom(rs.getString("phone"));
-                    p.setAge(rs.getInt("age"));
-                    p.setPrenom(rs.getString("mail"));
+                    p = mapResultSetToPatient(rs);
                 }
             }
         } catch (Exception e) {
@@ -100,17 +95,7 @@ public class PatientDAOImpl implements PatientDAO{
             */
 
             while (rs.next()) {
-                Patient p = new Patient(
-                        rs.getInt("id"),
-                        rs.getString("cne"),
-                        rs.getString("prenom"),
-                        rs.getString("nom"),
-                        rs.getString("phone"),
-                        rs.getInt("age"),
-                        rs.getString("mail")
-                        
-                );
-                PatientsList.add(p);
+                PatientsList.add(mapResultSetToPatient(rs));;
             }
         }
 
@@ -132,18 +117,7 @@ public class PatientDAOImpl implements PatientDAO{
 
             try (ResultSet rs = pstm.executeQuery()) {
                 while (rs.next()) {
-                    Patient p = new Patient(
-                        rs.getInt("id"),
-                        rs.getString("cne"),
-                        rs.getString("prenom"),
-                        rs.getString("nom"),
-                        rs.getString("phone"),
-                        rs.getInt("age"),
-                        rs.getString("mail")
-                        
-                    );
-                    PatientsByNameSearchList.add(p);
-                    
+                    PatientsByNameSearchList.add(mapResultSetToPatient(rs));;
                 }
             }
         }
@@ -191,6 +165,20 @@ public class PatientDAOImpl implements PatientDAO{
         }
         
         return delete;
+    }
+    
+    
+    
+    private Patient mapResultSetToPatient(ResultSet rs) throws SQLException {
+        Patient p = new Patient();
+        p.setId(rs.getInt("id"));
+        p.setCne(rs.getString("cne"));
+        p.setPrenom(rs.getString("prenom"));
+        p.setNom(rs.getString("nom"));
+        p.setPhone(rs.getString("phone"));
+        p.setAge(rs.getInt("age"));
+        p.setMail(rs.getString("mail"));
+        return p;
     }
     
 }
