@@ -1,166 +1,196 @@
 package dao.impl;
 
+import dao.interfaces.PatientDAO;
 import db.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
-import java.util.Vector;
-import javax.swing.table.DefaultTableModel;
 import model.Patient;
 
 /**
  *
  * @author hhgyd
  */
-public class PatientDAOImpl {
-    
-    /*
-    public boolean addPatient(Patient patient) {
-        boolean insert = false;
+public class PatientDAOImpl implements PatientDAO{
 
+    @Override
+    public boolean createPatient(Patient patient) throws SQLException {
         
-        String cne = patient.getCneP();
-        String prenom = patient.getPrenomP();
-        String nom = patient.getNomP();
-        String phone = patient.getPhoneP();
-        int age = patient.getAgeP();
+        boolean create = false;
+        String SQL = "INSERT INTO patient (cne, prenom, nom, phone, age, mail) VALUES (?, ?, ?, ?, ?, ?)";
+  
+        try (java.sql.Connection conn = Connection.connect();
+             PreparedStatement pstm = conn.prepareStatement(SQL)){
+            
+            pstm.setString(1, patient.getCne());
+            pstm.setString(2, patient.getPrenom());
+            pstm.setString(3, patient.getNom());
+            pstm.setString(4, patient.getPhone());
+            pstm.setInt(5, patient.getAge());
+            pstm.setString(6, patient.getMail());
+
+            int etat = pstm.executeUpdate();
+
+            // Retrieve generated ID
+            try (ResultSet rs = pstm.getGeneratedKeys()) {
+                if (rs.next()) {
+                    patient.setId(rs.getInt(1));
+                }
+            }
+            
+            if(etat == 1){
+                create = true;
+                System.out.println("Patient ajouté avec succès : " + patient);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Insert error !");
+        } 
         
-        String SQL = "INSERT INTO Patients(cne, prenom, nom, phone, age) " +
-                     "VALUES(?, ?, ?, ?, ?, ?)";
+        return create;
+    }
+
+    @Override
+    public Patient findPatientById(int id) throws SQLException {
+        
+        String SQL = "SELECT id, cne, prenom, nom, phone, age, mail FROM patient WHERE id = ?";
+        
+        Patient p = null;
+
+                            
+        try (java.sql.Connection conn = Connection.connect();
+             PreparedStatement ps = conn.prepareStatement(SQL)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    p.setCne(rs.getString("cne"));
+                    p.setPrenom(rs.getString("prenom"));
+                    p.setNom(rs.getString("nom"));
+                    p.setPrenom(rs.getString("phone"));
+                    p.setAge(rs.getInt("age"));
+                    p.setPrenom(rs.getString("mail"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Selection error !");
+        }
+
+        return p;
+    }
+
+    @Override
+    public LinkedList<Patient> findAllPatients() throws SQLException {
+        
+        String SQL = "SELECT * FROM patient ORDER BY nom, prenom";
+
+        LinkedList<Patient> PatientsList = new LinkedList<>();
+
+        try (java.sql.Connection conn = Connection.connect();
+             Statement pstm = conn.createStatement();
+             ResultSet rs = pstm.executeQuery(SQL)) {
+            
+            /*
+            String cne, String prenom, String nom, String phone, int age, String mail
+            */
+
+            while (rs.next()) {
+                Patient p = new Patient(
+                        rs.getInt("id"),
+                        rs.getString("cne"),
+                        rs.getString("prenom"),
+                        rs.getString("nom"),
+                        rs.getString("phone"),
+                        rs.getInt("age"),
+                        rs.getString("mail")
+                        
+                );
+                PatientsList.add(p);
+            }
+        }
+
+        return PatientsList;
+    }
+
+    @Override
+    public LinkedList<Patient> searchPatientByName(String keyword) throws SQLException {
+        String SQL = "SELECT * FROM patient WHERE nom LIKE ? OR prenom LIKE ? ORDER BY nom, prenom";
+
+        LinkedList<Patient> PatientsByNameSearchList = new LinkedList<>();
 
         try (java.sql.Connection conn = Connection.connect();
              PreparedStatement pstm = conn.prepareStatement(SQL)) {
 
-            pstm.setString(1, cne);
-            pstm.setString(2, prenom);
-            pstm.setString(3, nom);
-            pstm.setString(4, phone);
-            pstm.setInt(5, age);
+            String search = "%" + keyword + "%";
+            pstm.setString(1, search);
+            pstm.setString(2, search);
 
-            int state = pstm.executeUpdate();
-            if (state == 1) {
-                insert = true;
+            try (ResultSet rs = pstm.executeQuery()) {
+                while (rs.next()) {
+                    Patient p = new Patient(
+                        rs.getInt("id"),
+                        rs.getString("cne"),
+                        rs.getString("prenom"),
+                        rs.getString("nom"),
+                        rs.getString("phone"),
+                        rs.getInt("age"),
+                        rs.getString("mail")
+                        
+                    );
+                    PatientsByNameSearchList.add(p);
+                    
+                }
             }
+        }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return insert;
-    }
-    
-    public static LinkedList<Patient> getAllPatients(){
-        
-        LinkedList<Patient> ListP = new LinkedList<>();
-        
-        String SQL = "SELECT * FROM Patients";
-        //String cneP, String prenomP, String nomP, String phoneP, int ageP
-        try (java.sql.Connection conn = Connection.connect();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(SQL)) {
-            
-            while(rs.next()){
-                Patient p = new Patient(
-                        rs.getInt("idPatient"),
-                        rs.getString("cneP"),
-                        rs.getString("prenomP"),
-                        rs.getString("nomP"),
-                        rs.getString("phoneP"),
-                        rs.getInt("ageP")               
-                );
-                
-                ListP.add(p);
-            }
-            
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return ListP;
+        return PatientsByNameSearchList;
     }
 
-    public boolean updatePatient(Patient patient){
+    @Override
+    public boolean updatePatient(Patient patient) throws SQLException {
         boolean update = false;
-        
-        String SQL = "UPDATE Patients " + 
-                    "SET cneP = ?, prenomP = ?, nomP = ?, phoneP = ?, ageP = ?";
-        
-        String cne = patient.getCneP();
-        String prenom = patient.getPrenomP();
-        String nom = patient.getNomP();
-        String phone = patient.getPhoneP();
-        int age = patient.getAgeP();
-        
+        String SQL = "UPDATE patient SET cne = ?, prenom = ?, nom = ?, phone = ?, age = ?, mail = ? WHERE id = ?";
+
         try (java.sql.Connection conn = Connection.connect();
-            PreparedStatement pstm = conn.prepareStatement(SQL)) {
+             PreparedStatement pstm = conn.prepareStatement(SQL)) {
+
+            pstm.setString(1, patient.getCne());
+            pstm.setString(2, patient.getPrenom());
+            pstm.setString(3, patient.getNom());
+            pstm.setString(4, patient.getPhone());
+            pstm.setInt(5, patient.getAge());
+            pstm.setString(6, patient.getMail());
+            pstm.setInt(7, patient.getId());
+
+            int etat = pstm.executeUpdate();
             
-            pstm.setString(1, cne);
-            pstm.setString(2, prenom);
-            pstm.setString(3, nom);
-            pstm.setString(4, phone);
-            pstm.setInt(5, age);
-            
-            int state = pstm.executeUpdate();
-            if(state == 1) update = true;
-            
-        } catch (Exception e) {
+            if(etat == 1) update = true;
         }
         return update;
-        
     }
-    
-    public boolean deletePatient(int idPatient){
 
+    @Override
+    public boolean deletePatient(int id) throws SQLException {
         boolean delete = false;
-                
-        String SQL = "DELETE FROM participants WHERE id = ?";
+        
+        String SQL = "DELETE FROM patient WHERE id = ?";
 
         try (java.sql.Connection conn = Connection.connect();
              PreparedStatement pstm = conn.prepareStatement(SQL)) {
-            
-            pstm.setInt(1, idPatient);
 
+            pstm.setInt(1, id);
             
             int etat = pstm.executeUpdate();
-            if (etat == 1) {
-                delete = true;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            if (etat == 1) delete = true;
+            
         }
         
         return delete;
-        
-        
     }
-    // Construction d'un TableModel à partir d'un ResultSet
-    public static DefaultTableModel buildTableModel(ResultSet rs)
-        throws SQLException {
-            ResultSetMetaData metaData = rs.getMetaData();
-
-            // noms de colonnes
-            Vector<String> columnNames = new Vector<>();
-            int columnCount = metaData.getColumnCount();
-            for (int column = 1; column <= columnCount; column++) {
-                columnNames.add(metaData.getColumnName(column));
-            }
-
-            // données du tableau
-            Vector<Vector<Object>> data = new Vector<>();
-            while (rs.next()) {
-                Vector<Object> vector = new Vector<>();
-                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-                    vector.add(rs.getObject(columnIndex));
-                }
-                data.add(vector);
-        }
-        return new DefaultTableModel(data, columnNames);
-    }
-
-*/
     
 }
