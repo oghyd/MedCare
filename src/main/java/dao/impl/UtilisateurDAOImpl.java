@@ -12,8 +12,8 @@ import model.Utilisateur;
 /**
  *
  * @author hhgyd
- * createUtilisateur (based on role), getById, getAllMedecin, getAllAssistants, update, delete, findByLoginPassword
- */
+ * 
+*/
 public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     @Override
@@ -43,6 +43,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
             }
             
             int etat = pstm.executeUpdate();
+            
+            try (ResultSet rs = pstm.getGeneratedKeys()) {
+                if (rs.next()) {
+                    u.setId(rs.getInt(1));
+                }
+            }
+            
             if(etat == 1){
                 create = true;
                 System.out.println("Utilisateur ajouté avec succès : " + u);
