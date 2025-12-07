@@ -15,8 +15,10 @@ public class Connection {
 	public static java.sql.Connection connect() throws SQLException{
 		java.sql.Connection conn = null;
 		try{
-                    conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/tp7?" +
-                            "user=root&password=root");
+                    conn = DriverManager.getConnection(
+    "jdbc:mysql://127.0.0.1:3306/medcare?user=root&password="
+);
+
 		}
 		catch (SQLException e) {
 		    System.out.println("SQLException: " + e.getMessage());
