@@ -6,36 +6,35 @@ package Service;
 
 import dao.interfaces.UtilisateurDAO;
 import dao.impl.UtilisateurDAOImpl;
+import java.sql.SQLException;
 import model.Utilisateur;
 
 /**
  *
  * @author idber
  */
-
-
-public class AuthService {
+    public class AuthService {
 
     private final UtilisateurDAO utilisateurDAO;
 
-    // Constructeur
     public AuthService() {
         this.utilisateurDAO = new UtilisateurDAOImpl();
     }
 
     /**
-     * Tentative de connexion.
+     * Authentifie un utilisateur.
      * 
-     * @param login    login fourni dans l’UI
-     * @param password password fourni dans l’UI
-     * @return Utilisateur si OK, null si identifiants invalides
+     * @param login    login saisi dans l'UI
+     * @param password mot de passe saisi dans l'UI
+     * @return Utilisateur si OK, sinon null
      */
     public Utilisateur login(String login, String password) {
         try {
+            // utilise exactement la méthode existante : findByLoginPassword
             return utilisateurDAO.findByLoginPassword(login, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Erreur AuthService.login()");
+
+        } catch (SQLException e) {
+            System.err.println("Erreur dans AuthService.login()");
             return null;
         }
     }
