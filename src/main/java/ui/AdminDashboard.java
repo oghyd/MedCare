@@ -4,6 +4,7 @@
  */
 package ui;
 
+import javax.swing.JOptionPane;
 import model.Utilisateur;
 
 /**
@@ -12,19 +13,18 @@ import model.Utilisateur;
  */
 public class AdminDashboard extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminDashboard.class.getName());
+     private static final java.util.logging.Logger logger =
+            java.util.logging.Logger.getLogger(AdminDashboard.class.getName());
 
-    /**
-     * Creates new form AdminDashboard
-     */
-    public AdminDashboard() {
+    private final Utilisateur utilisateur; // Admin connecté
+
+    public AdminDashboard(Utilisateur u) {
+        this.utilisateur = u;
         initComponents();
+        // Affichage du nom de l’admin
+        lblAdminName.setText(u.getNom() + " " + u.getPrenom());
     }
-
-    AdminDashboard(Utilisateur u) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,21 +34,220 @@ public class AdminDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        lblAdminName = new javax.swing.JLabel();
+        btnMedecins = new javax.swing.JButton();
+        btnAssistants = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        btnPatients = new javax.swing.JButton();
+        btnConsultations = new javax.swing.JButton();
+        btnCategories = new javax.swing.JButton();
+        btnMonthlyReport = new javax.swing.JButton();
+        btnPaymentReport = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 0, 255));
+        jLabel1.setText("Espace Administrateur");
+
+        lblAdminName.setText(" Connecté en tant que : ");
+
+        btnMedecins.setText("Gérer les médecins");
+        btnMedecins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMedecinsActionPerformed(evt);
+            }
+        });
+
+        btnAssistants.setText("Gérer les assistant");
+        btnAssistants.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssistantsActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("────────────────────── Gestion Médicale ───────────────────────");
+
+        jLabel8.setText("──────────────────── Gestion du Personnel ──────────────────────");
+
+        jLabel10.setText("──────────────────  Rapports & Statistiques ─────────────────────");
+
+        btnPatients.setText("Gérer les patients");
+        btnPatients.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPatientsActionPerformed(evt);
+            }
+        });
+
+        btnConsultations.setText("Gérer les consultations ");
+        btnConsultations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultationsActionPerformed(evt);
+            }
+        });
+
+        btnCategories.setText("Gérer les catégories ");
+        btnCategories.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCategoriesActionPerformed(evt);
+            }
+        });
+
+        btnMonthlyReport.setText(" Voir rapport mensuel");
+        btnMonthlyReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMonthlyReportActionPerformed(evt);
+            }
+        });
+
+        btnPaymentReport.setText("Rapport des paiements");
+        btnPaymentReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaymentReportActionPerformed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(255, 255, 255));
+        jButton1.setForeground(new java.awt.Color(255, 51, 0));
+        jButton1.setText("Déconnexion ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(btnMedecins)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAssistants, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAdminName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(92, 92, 92))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(btnPatients)
+                .addGap(18, 18, 18)
+                .addComponent(btnConsultations)
+                .addGap(18, 18, 18)
+                .addComponent(btnCategories)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(btnMonthlyReport)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnPaymentReport)
+                .addGap(72, 72, 72))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1)
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(lblAdminName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMedecins)
+                    .addComponent(btnAssistants))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPatients)
+                    .addComponent(btnConsultations)
+                    .addComponent(btnCategories))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel10)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMonthlyReport)
+                    .addComponent(btnPaymentReport))
+                .addGap(37, 37, 37)
+                .addComponent(jButton1)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAssistantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssistantsActionPerformed
+        // TODO add your handling code here:
+         new ManageAssistantsPanel(utilisateur).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAssistantsActionPerformed
+
+    private void btnConsultationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultationsActionPerformed
+        // TODO add your handling code here:
+         new AppointmentPanel(utilisateur).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnConsultationsActionPerformed
+
+    private void btnCategoriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriesActionPerformed
+        // TODO add your handling code here:
+        new CategoryPanel(utilisateur).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCategoriesActionPerformed
+
+    private void btnMedecinsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMedecinsActionPerformed
+        // TODO add your handling code here:
+        new ManageDoctorsPanel(utilisateur).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnMedecinsActionPerformed
+
+    private void btnPatientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPatientsActionPerformed
+        // TODO add your handling code here:
+        new PatientPanel(utilisateur).setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_btnPatientsActionPerformed
+
+    private void btnMonthlyReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMonthlyReportActionPerformed
+        // TODO add your handling code here:
+         new MonthlyReportPanel(utilisateur).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnMonthlyReportActionPerformed
+
+    private void btnPaymentReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaymentReportActionPerformed
+        // TODO add your handling code here:
+         new PaymentReportPanel(utilisateur).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPaymentReportActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new LoginPanel().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -72,9 +271,23 @@ public class AdminDashboard extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AdminDashboard().setVisible(true));
-    }
+java.awt.EventQueue.invokeLater(() -> {
+        JOptionPane.showMessageDialog(null,"Veuillez lancer l'application depuis LoginPanel.","Erreur", JOptionPane.ERROR_MESSAGE);});
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAssistants;
+    private javax.swing.JButton btnCategories;
+    private javax.swing.JButton btnConsultations;
+    private javax.swing.JButton btnMedecins;
+    private javax.swing.JButton btnMonthlyReport;
+    private javax.swing.JButton btnPatients;
+    private javax.swing.JButton btnPaymentReport;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel lblAdminName;
     // End of variables declaration//GEN-END:variables
 }

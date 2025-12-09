@@ -16,6 +16,9 @@ import model.Consultation;
 import model.Patient;
 import dao.impl.CategorieConsultationDAOImpl;
 import dao.interfaces.CategorieConsultationDAO;
+import model.CategorieConsultation;
+import model.Role;
+import model.Utilisateur;
 
 
 /**
@@ -26,9 +29,9 @@ public class PaymentPanel extends javax.swing.JFrame {
     
    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PaymentPanel.class.getName());
    private final PatientDAOImpl patientDAO = new PatientDAOImpl();
-   private final UtilisateurDAOImpl userDAO = new UtilisateurDAOImpl();
    private final ConsultationDAO consultationDAO = new ConsultationDAOImpl();
    private final CategorieConsultationDAO categorieDAO = new CategorieConsultationDAOImpl();
+    private final Utilisateur utilisateur; 
 
    
 
@@ -36,7 +39,8 @@ public class PaymentPanel extends javax.swing.JFrame {
     /**
      * Creates new form PaymentPanelPaymentPanel
      */
-    public PaymentPanel() {
+    public PaymentPanel(Utilisateur u) {
+        this.utilisateur = u;
         initComponents();    
         loadPayments();
     }
@@ -55,7 +59,8 @@ private void loadPayments() {
             String prenom = p != null ? p.getPrenom() : "N/A";
 
             // Charger catégorie (temporaire → affichage ID)
-           String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategorie()).getCategorie();
+            CategorieConsultation cat = categorieDAO.findCategorieConsultationById(c.getIdcategorie());
+            String categorieName = (cat != null) ? cat.getCategorie() : "N/A";
 
             // Ajouter ligne
             model.addRow(new Object[]{
@@ -96,6 +101,8 @@ private void loadPayments() {
         jLabel1 = new javax.swing.JLabel();
         btnSearch = new javax.swing.JButton();
         btnMarkUnpaid = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,6 +140,7 @@ private void loadPayments() {
             }
         });
 
+        btnMarkPaid.setForeground(new java.awt.Color(0, 153, 51));
         btnMarkPaid.setText("Marquer payé");
         btnMarkPaid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,6 +148,7 @@ private void loadPayments() {
             }
         });
 
+        btnFilterPaid.setForeground(new java.awt.Color(0, 153, 51));
         btnFilterPaid.setText("Filtrer Payés");
         btnFilterPaid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,6 +156,7 @@ private void loadPayments() {
             }
         });
 
+        btnFilterUnpaid.setForeground(new java.awt.Color(204, 51, 0));
         btnFilterUnpaid.setText("Filtrer Non payés");
         btnFilterUnpaid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,12 +173,24 @@ private void loadPayments() {
             }
         });
 
+        btnMarkUnpaid.setForeground(new java.awt.Color(204, 0, 0));
         btnMarkUnpaid.setText("Marquer impayé");
         btnMarkUnpaid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMarkUnpaidActionPerformed(evt);
             }
         });
+
+        btnBack.setText("Retour");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 102, 153));
+        jLabel2.setText("Gestion des Payement");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,51 +199,59 @@ private void loadPayments() {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtSearchPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
-                                .addComponent(btnSearch)
-                                .addGap(30, 30, 30)
-                                .addComponent(btnMarkPaid, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnFilterPaid))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnFilterUnpaid, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnMarkUnpaid, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addGap(224, 224, 224)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(28, 28, 28)
+                                    .addComponent(jLabel1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtSearchPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnSearch)
+                                    .addGap(32, 32, 32)
+                                    .addComponent(btnMarkPaid, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(230, 230, 230)
+                                    .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(30, 30, 30)
+                                    .addComponent(btnFilterPaid)))
+                            .addGap(39, 39, 39)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnMarkUnpaid)
+                                .addComponent(btnFilterUnpaid)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnBack)))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(108, 108, 108)
-                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(9, 9, 9)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSearch)
                         .addComponent(txtSearchPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)
-                        .addComponent(btnMarkPaid)
-                        .addComponent(btnSearch))
+                        .addComponent(jLabel1))
+                    .addComponent(btnMarkPaid)
                     .addComponent(btnMarkUnpaid))
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFilterUnpaid)
-                    .addComponent(btnFilterPaid))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRefresh)
+                    .addComponent(btnFilterPaid)
+                    .addComponent(btnFilterUnpaid))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(btnBack)
+                .addContainerGap())
         );
 
         pack();
@@ -235,31 +265,7 @@ private void loadPayments() {
 
     private void txtSearchPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPatientActionPerformed
         // TODO add your handling code here:
-        String keyword = txtSearchPatient.getText().trim();
-
-    try {
-        LinkedList<Patient> list = patientDAO.searchPatientByName(keyword);
-
-        javax.swing.table.DefaultTableModel model =
-                (javax.swing.table.DefaultTableModel) tablePatients.getModel();
-
-        model.setRowCount(0);
-
-        for (Patient p : list) {
-            model.addRow(new Object[]{
-                p.getId(),
-                p.getCne(),
-                p.getPrenom(),
-                p.getNom(),
-                p.getPhone(),
-                p.getAge(),
-                p.getMail()
-            });
-        }
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Erreur recherche !");
-    }
+           btnSearchActionPerformed(evt);
     }//GEN-LAST:event_txtSearchPatientActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -379,7 +385,8 @@ String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategor
             if (c.isPaid()) {
 
                 Patient p = patientDAO.findPatientById(c.getIdPatient());
-String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategorie()).getCategorie();
+                CategorieConsultation cat = categorieDAO.findCategorieConsultationById(c.getIdcategorie());
+                String categorieName = (cat != null) ? cat.getCategorie() : "N/A";
 
                 model.addRow(new Object[]{
                     c.getIdC(),
@@ -402,9 +409,8 @@ String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategor
     }//GEN-LAST:event_btnFilterPaidActionPerformed
 
     private void btnMarkUnpaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkUnpaidActionPerformed
-        // TODO add your handling code here:
-
-    int row = tablePatients.getSelectedRow();
+             // TODO add your handling code here:
+        int row = tablePatients.getSelectedRow();
 
     if (row == -1) {
         JOptionPane.showMessageDialog(this, "Sélectionnez une consultation !");
@@ -415,29 +421,32 @@ String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategor
 
     int confirm = JOptionPane.showConfirmDialog(
             this,
-            "Marquer cette consultation comme NON payée ?",
+            "Marquer cette consultation comme non payée ?",
             "Confirmation",
             JOptionPane.YES_NO_OPTION
     );
 
     if (confirm == JOptionPane.YES_OPTION) {
         try {
-
-            java.sql.Connection conn = db.Connection.connect();
-            String sql = "UPDATE consultation SET paid = 0, date_paiement = NULL WHERE id = ?";
-            java.sql.PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, idConsultation);
-            ps.executeUpdate();
-
+            consultationDAO.markAsUnpaid(idConsultation, java.time.LocalDate.now());
             JOptionPane.showMessageDialog(this, "Consultation marquée comme NON payée !");
             loadPayments();
-
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erreur lors de l'opération !");
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'enregistrement !");
             e.printStackTrace();
         }
     }
     }//GEN-LAST:event_btnMarkUnpaidActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+   switch (utilisateur.getRole()) {
+        case ADMIN -> new AdminDashboard(utilisateur).setVisible(true);
+        case ASSISTANT -> new AssistantDashboard(utilisateur).setVisible(true);
+        case MEDECIN -> new DoctorDashboard(utilisateur).setVisible(true);
+    }
+    this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -461,10 +470,11 @@ String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategor
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new PaymentPanel().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {JOptionPane.showMessageDialog(null,"Veuillez lancer l'application depuis LoginPanel.","Erreur", JOptionPane.ERROR_MESSAGE);});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnFilterPaid;
     private javax.swing.JButton btnFilterUnpaid;
     private javax.swing.JButton btnMarkPaid;
@@ -472,6 +482,7 @@ String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategor
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablePatients;
     private javax.swing.JTextField txtSearchPatient;

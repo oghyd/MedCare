@@ -4,6 +4,14 @@
  */
 package ui;
 
+import Service.ReportService;
+import dao.impl.ConsultationDAOImpl;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Utilisateur;
+import report.dto.DailyRevenueDTO;
+import report.dto.MonthlyReportDTO;
+
 /**
  *
  * @author idber
@@ -11,13 +19,93 @@ package ui;
 public class MonthlyReportPanel extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MonthlyReportPanel.class.getName());
+    private final Utilisateur utilisateur;
+    private final ReportService reportService = new ReportService(new ConsultationDAOImpl());
 
     /**
      * Creates new form MonthlyReportPanel
      */
-    public MonthlyReportPanel() {
-        initComponents();
+    public MonthlyReportPanel(Utilisateur u) {
+    this.utilisateur = u;
+    initComponents();
+
+    lblAdminName.setText("Admin connecté : " + u.getNom() + " " + u.getPrenom());
     }
+
+    private void loadMonthlyReport() {
+    try {
+        int month = Integer.parseInt(txtMonth.getText().trim());
+        int year = Integer.parseInt(txtYear.getText().trim());
+
+        // Appel du service (DAO → DTO)
+        MonthlyReportDTO dto = reportService.generateMonthlyReport(year, month);
+
+        // Remplissage résumé
+        lblTotalConsultations.setText(String.valueOf(dto.getTotalConsultations()));
+        lblTotalRevenue.setText(dto.getTotalRevenue() + " MAD");
+
+        // Remplissage tableau
+        DefaultTableModel model = (DefaultTableModel) tableDailyRevenue.getModel();
+        model.setRowCount(0);
+
+        for (DailyRevenueDTO d : dto.getDailyRevenues()) {
+            model.addRow(new Object[]{
+                    d.getDate(),
+                    d.getRevenue()
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+                "Erreur ! Vérifiez le mois et l’année.",
+                "Erreur", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
+    private void loadFullReport() {
+    try {
+        // Appel direct DAO pour récupérer tout
+        java.util.LinkedList<model.Consultation> all = new ConsultationDAOImpl().findAllConsultations();
+
+        double totalRevenue = 0;
+        int totalConsultations = all.size();
+
+        java.util.Map<java.time.LocalDate, Double> map = new java.util.HashMap<>();
+
+        for (model.Consultation c : all) {
+            if (c.isPaid() && c.getDatePaiement() != null) {
+                totalRevenue += c.getPrix();
+
+                map.put(c.getDatePaiement(),
+                        map.getOrDefault(c.getDatePaiement(), 0.0) + c.getPrix());
+            }
+        }
+
+        // Remplir labels
+        lblTotalConsultations.setText(String.valueOf(totalConsultations));
+        lblTotalRevenue.setText(totalRevenue + " MAD");
+
+        // Remplir tableau
+        DefaultTableModel model = (DefaultTableModel) tableDailyRevenue.getModel();
+        model.setRowCount(0);
+
+        for (java.time.LocalDate d : map.keySet()) {
+            model.addRow(new Object[]{
+                    d,
+                    map.get(d)
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+                "Erreur lors du chargement du rapport complet.",
+                "Erreur", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
+
+
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,21 +116,204 @@ public class MonthlyReportPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTitle = new javax.swing.JLabel();
+        lblAdminName = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        txtMonth = new javax.swing.JTextField();
+        txtYear = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblTotalConsultations = new javax.swing.JLabel();
+        lblTotalRevenue = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableDailyRevenue = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitle.setForeground(new java.awt.Color(51, 0, 255));
+        lblTitle.setText("RAPPORT MENSUEL");
+
+        lblAdminName.setText("Admin connecté : <nom prénom>");
+
+        jLabel6.setText("──────────────────────────────────────────────────────");
+
+        jLabel1.setText("Mois / Année :");
+
+        txtMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMonthActionPerformed(evt);
+            }
+        });
+
+        txtYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtYearActionPerformed(evt);
+            }
+        });
+
+        btnSearch.setText("Afficher");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("────────────────────RÉSUMÉ DU MOIS──────────────────────");
+
+        jLabel8.setText("───────────────────Revenus journaliers─────────────────────");
+
+        jLabel9.setText("────────────────────────────────────────────────────");
+
+        jLabel2.setText("Total consultations :");
+
+        jLabel3.setText("Total Revenue :");
+
+        lblTotalConsultations.setText(".");
+
+        lblTotalRevenue.setText(".");
+
+        btnBack.setText("Retour");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        tableDailyRevenue.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Date", "Revenus (MAD)"
+            }
+        ));
+        jScrollPane1.setViewportView(tableDailyRevenue);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAdminName, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(174, 174, 174)
+                        .addComponent(lblTitle))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnBack)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTotalRevenue, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTotalConsultations, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(lblTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblAdminName)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel6)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel1))
+                    .addComponent(txtMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(lblTotalConsultations))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblTotalRevenue))
+                .addGap(27, 27, 27)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBack)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMonthActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMonthActionPerformed
+
+    private void txtYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtYearActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        String monthText = txtMonth.getText().trim();
+        String yearText = txtYear.getText().trim();
+
+    // Si l'un des champs est vide on affiche tout le rapport
+    if (monthText.isEmpty() || yearText.isEmpty()) {
+        loadFullReport();
+        return;
+    }
+
+    //  Sinon filtrer normalement
+    loadMonthlyReport();
+
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        new AdminDashboard(utilisateur).setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -66,9 +337,26 @@ public class MonthlyReportPanel extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MonthlyReportPanel().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {JOptionPane.showMessageDialog(null,"Veuillez lancer l'application depuis LoginPanel.","Erreur", JOptionPane.ERROR_MESSAGE);});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAdminName;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblTotalConsultations;
+    private javax.swing.JLabel lblTotalRevenue;
+    private javax.swing.JTable tableDailyRevenue;
+    private javax.swing.JTextField txtMonth;
+    private javax.swing.JTextField txtYear;
     // End of variables declaration//GEN-END:variables
 }

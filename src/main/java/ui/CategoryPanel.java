@@ -4,6 +4,18 @@
  */
 package ui;
 
+import dao.interfaces.CategorieConsultationDAO;
+import dao.impl.CategorieConsultationDAOImpl;
+
+import model.CategorieConsultation;
+import model.Utilisateur;
+import model.Role;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
+import java.util.LinkedList;
+
 /**
  *
  * @author idber
@@ -11,12 +23,60 @@ package ui;
 public class CategoryPanel extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CategoryPanel.class.getName());
+     private final CategorieConsultationDAO categorieDAO = new CategorieConsultationDAOImpl();
+    private final Utilisateur utilisateur;
 
-    /**
-     * Creates new form CategoryPanel
-     */
-    public CategoryPanel() {
+    /** CONSTRUCTEUR **/
+    public CategoryPanel(Utilisateur u) {
+        this.utilisateur = u;
         initComponents();
+        lblAdminName.setText("Connecté : " + u.getNom() + " " + u.getPrenom());
+        loadCategories();
+    }
+     
+    /** CHARGER TOUTES LES CATÉGORIES **/
+    private void loadCategories() {
+        try {
+            LinkedList<CategorieConsultation> list = categorieDAO.findAllCategorieConsultation();
+
+            DefaultTableModel model = (DefaultTableModel) tableCategories.getModel();
+            model.setRowCount(0);
+
+            for (CategorieConsultation c : list) {
+                model.addRow(new Object[]{
+                        c.getId(),
+                        c.getCategorie()
+                });
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erreur chargement catégories !");
+            e.printStackTrace();
+        }
+    }
+
+    /** RECHERCHE **/
+    private void searchCategory() {
+        String keyword = txtSearch.getText().trim().toLowerCase();
+
+        try {
+            LinkedList<CategorieConsultation> list = categorieDAO.findAllCategorieConsultation();
+
+            DefaultTableModel model = (DefaultTableModel) tableCategories.getModel();
+            model.setRowCount(0);
+
+            for (CategorieConsultation c : list) {
+                if (c.getCategorie().toLowerCase().contains(keyword)) {
+                    model.addRow(new Object[]{
+                            c.getId(),
+                            c.getCategorie()
+                    });
+                }
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erreur recherche !");
+        }
     }
 
     /**
@@ -28,21 +88,217 @@ public class CategoryPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        lblAdminName = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtSearch = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableCategories = new javax.swing.JTable();
+        btnAdd = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 0, 255));
+        jLabel1.setText("Gestion des Catégories");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 6, -1, 26));
+
+        jLabel6.setText("──────────────────────────────────────────────────────");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 317, -1, -1));
+
+        jLabel7.setText("──────────────────────────────────────────────────────");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 68, -1, -1));
+
+        jLabel8.setText("────────────────────TABLE DES CATÉGORIES────────────────────");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 125, -1, -1));
+
+        lblAdminName.setText("Admin connecté : <nom prénom>");
+        getContentPane().add(lblAdminName, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 46, 248, -1));
+
+        jLabel2.setText("Recherche catégorie :");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 93, -1, -1));
+
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 91, -1));
+
+        btnSearch.setText("Chercher");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 90, -1, -1));
+
+        btnRefresh.setText("rafraichir");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(377, 90, -1, -1));
+
+        tableCategories.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "ID", "Nom Catégorie"
+            }
+        ));
+        jScrollPane1.setViewportView(tableCategories);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, 158));
+
+        btnAdd.setForeground(new java.awt.Color(0, 102, 51));
+        btnAdd.setText("Ajouter");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 75, -1));
+
+        btnEdit.setForeground(new java.awt.Color(102, 102, 0));
+        btnEdit.setText("Modifier");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 340, 75, -1));
+
+        btnDelete.setForeground(new java.awt.Color(204, 0, 0));
+        btnDelete.setText("Supprimer");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 340, -1, -1));
+
+        btnBack.setText("Retour");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(408, 368, 75, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        int row = tableCategories.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Sélectionnez une catégorie !");
+            return;
+        }
+
+        int id = (int) tableCategories.getValueAt(row, 0);
+        String oldNom = (String) tableCategories.getValueAt(row, 1);
+
+        String nom = JOptionPane.showInputDialog(this, "Nom :", oldNom);
+        if (nom == null || nom.isEmpty()) return;
+
+        try {
+            CategorieConsultation c = new CategorieConsultation(id, nom);
+
+            if (categorieDAO.updateCategorieConsultation(c)) {
+                JOptionPane.showMessageDialog(this, "Modifié !");
+                loadCategories();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur modification !");
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int row = tableCategories.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Sélectionnez une catégorie !");
+            return;
+        }
+
+        int id = (int) tableCategories.getValueAt(row, 0);
+
+        if (JOptionPane.showConfirmDialog(this, "Supprimer ?", "Confirmation",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+            try {
+                if (categorieDAO.deleteCategorieConsultation(id)) {
+                    JOptionPane.showMessageDialog(this, "Supprimé !");
+                    loadCategories();
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erreur suppression !");
+            }
+        }      
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+    switch (utilisateur.getRole()) {
+        case ADMIN -> new AdminDashboard(utilisateur).setVisible(true);
+        case ASSISTANT -> new AssistantDashboard(utilisateur).setVisible(true);
+        case MEDECIN -> new DoctorDashboard(utilisateur).setVisible(true);
+    }
+
+    this.dispose();
+
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        String nom = JOptionPane.showInputDialog(this, "Nom catégorie :");
+        if (nom == null || nom.isEmpty()) return;
+
+        try {
+            CategorieConsultation c = new CategorieConsultation();
+            c.setCategorie(nom);
+
+            if (categorieDAO.createCategorieConsultation(c)) {
+                JOptionPane.showMessageDialog(this, "Catégorie ajoutée !");
+                loadCategories();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur ajout !");
+        }
+    
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        searchCategory();
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        loadCategories();
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -66,9 +322,24 @@ public class CategoryPanel extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new CategoryPanel().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {JOptionPane.showMessageDialog(null,"Veuillez lancer l'application depuis LoginPanel.","Erreur", JOptionPane.ERROR_MESSAGE);});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAdminName;
+    private javax.swing.JTable tableCategories;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

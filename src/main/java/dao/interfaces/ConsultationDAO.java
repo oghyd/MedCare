@@ -40,7 +40,8 @@ public interface ConsultationDAO {
     
     // PAYMENT
     boolean markAsPaid(int consultationId, LocalDate datePaiement) throws SQLException;
-    
+    boolean markAsUnpaid(int consultationId, LocalDate datePaiement) throws SQLException;
+
     // DOCTOR VIEW
     LinkedList<Consultation> findDailyForDoctor(int medecinId, LocalDate date) throws SQLException;
     

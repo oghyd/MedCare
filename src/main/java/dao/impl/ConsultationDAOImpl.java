@@ -259,6 +259,28 @@ public class ConsultationDAOImpl implements ConsultationDAO {
     }
 
     @Override
+public boolean markAsUnpaid(int consultationId, LocalDate datePaiement) throws SQLException {
+    String sql = "UPDATE consultation SET paid = 0, date_paiement = ? WHERE id = ?";
+
+        try (java.sql.Connection conn = Connection.connect();
+             PreparedStatement pstm = conn.prepareStatement(sql)) {
+
+            if (datePaiement != null) {
+                pstm.setDate(1, Date.valueOf(datePaiement));
+            } else {
+                pstm.setNull(1, Types.DATE);
+            }
+            pstm.setInt(2, consultationId);
+
+            int affected = pstm.executeUpdate();
+            return affected > 0;
+        }
+        
+    }
+
+    
+    
+    @Override
     public LinkedList<Consultation> findDailyForDoctor(int medecinId, LocalDate date) throws SQLException {
         String sql = "SELECT * FROM consultation WHERE medecin_id = ? AND date_consultation = ? ORDER BY date_consultation";
         LinkedList<Consultation> findDailyForDoctorList = new LinkedList<>();
@@ -280,7 +302,7 @@ public class ConsultationDAOImpl implements ConsultationDAO {
 
     @Override
     public int countConsultationsForMonth(int year, int month) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM consultation WHERE YEAR(date_consultation) = ? AND MONTH(date_consultation) = ? AND status = 'DONE'";
+        String sql = "SELECT COUNT(*) FROM consultation WHERE YEAR(date_consultation) = ? AND MONTH(date_consultation) = ? AND paid = 1";
         try (java.sql.Connection conn = Connection.connect();
              PreparedStatement pstm = conn.prepareStatement(sql)) {
 
@@ -306,7 +328,7 @@ public class ConsultationDAOImpl implements ConsultationDAO {
          * Below we use consultation.prix because the model has prix.
          */
         String sql = "SELECT COALESCE(SUM(prix), 0) FROM consultation " +
-                     "WHERE YEAR(date_consultation) = ? AND MONTH(date_consultation) = ? AND status = 'DONE' AND paid = 1";
+                     "WHERE YEAR(date_consultation) = ? AND MONTH(date_consultation) = ? AND paid = 1";
 
         try (java.sql.Connection conn = Connection.connect();
              PreparedStatement pstm = conn.prepareStatement(sql)) {
@@ -328,11 +350,15 @@ public class ConsultationDAOImpl implements ConsultationDAO {
         /*
          * Same as above: use consultation.prix (model stores prix).
          */
-        String sql = "SELECT date_consultation AS jour, COALESCE(SUM(prix), 0) AS total " +
-                     "FROM consultation " +
-                     "WHERE YEAR(date_consultation) = ? AND MONTH(date_consultation) = ? AND status = 'DONE' AND paid = 1 " +
-                     "GROUP BY date_consultation " +
-                     "ORDER BY date_consultation";
+        String sql =
+    "SELECT date_paiement AS jour, COALESCE(SUM(prix), 0) AS total " +
+    "FROM consultation " +
+    "WHERE paid = 1 " +
+    "AND YEAR(date_paiement) = ? " +
+    "AND MONTH(date_paiement) = ? " +
+    "GROUP BY date_paiement " +
+    "ORDER BY date_paiement";
+
 
         LinkedHashMap<LocalDate, Double> map = new LinkedHashMap<>();
 
