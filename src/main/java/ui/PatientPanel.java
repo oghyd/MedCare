@@ -4,7 +4,11 @@
  */
 package ui;
 
+import dao.interfaces.PatientDAO;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
+import model.Patient;
+import model.Utilisateur;
 
 /**
  *
@@ -14,13 +18,19 @@ import javax.swing.JOptionPane;
 public class PatientPanel extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PatientPanel.class.getName());
+    private final PatientDAO patientDAO = new dao.impl.PatientDAOImpl();
+
+    private final Utilisateur utilisateur;
 
     /**
      * Creates new form ConsultationPanel
      */
-    public PatientPanel() {
-        initComponents();
-    }
+    public PatientPanel(Utilisateur u) {
+    this.utilisateur = u;
+    initComponents();
+    loadPatients();
+}
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,67 +46,91 @@ public class PatientPanel extends javax.swing.JFrame {
         btnSearch = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablePatients = new javax.swing.JTable();
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Gestion des Patients");
 
-        txtSearch.setText("jTextField1");
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchActionPerformed(evt);
             }
         });
 
-        btnSearch.setText("jButton1");
+        btnSearch.setText("Chercher");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
             }
         });
 
-        btnRefresh.setText("jButton1");
+        btnRefresh.setText("Lister");
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablePatients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "cne", "prenom", "nom", "phone", "age", "mail"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, false, true, true, true, true
+            };
 
-        btnAdd.setText("jButton1");
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablePatients);
+
+        btnAdd.setText("Ajouter");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
             }
         });
 
-        btnEdit.setText("jButton1");
+        btnEdit.setText("Modifier");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
             }
         });
 
-        btnDelete.setText("jButton2");
+        btnDelete.setText("Supprimer");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Info patient");
+
+        btnBack.setText("Retour");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
             }
         });
 
@@ -104,63 +138,102 @@ public class PatientPanel extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
-                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(139, 139, 139))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap()))
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)
+                        .addGap(93, 93, 93)
                         .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(96, 96, 96)
+                        .addComponent(btnDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))))
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(27, 27, 27)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch)
                     .addComponent(btnRefresh))
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnEdit)
-                    .addComponent(btnDelete))
+                    .addComponent(btnDelete)
+                    .addComponent(btnBack))
                 .addGap(41, 41, 41))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void loadPatients() {
+    try {
+        LinkedList<Patient> list = patientDAO.findAllPatients();
+
+        javax.swing.table.DefaultTableModel model =
+                (javax.swing.table.DefaultTableModel) tablePatients.getModel();
+
+        model.setRowCount(0);
+
+        for (Patient p : list) {
+            model.addRow(new Object[]{
+                p.getId(),
+                p.getCne(),
+                p.getPrenom(),
+                p.getNom(),
+                p.getPhone(),
+                p.getAge(),
+                p.getMail()
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur chargement patients");
+        e.printStackTrace();
+    }
+}
+    
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
-        String keyword = txtSearch.getText().trim();
+       String keyword = txtSearch.getText().trim();
 
     try {
         LinkedList<Patient> list = patientDAO.searchPatientByName(keyword);
 
-        DefaultTableModel model = (DefaultTableModel) tablePatients.getModel();
+        javax.swing.table.DefaultTableModel model =
+                (javax.swing.table.DefaultTableModel) tablePatients.getModel();
+
         model.setRowCount(0);
 
         for (Patient p : list) {
@@ -183,25 +256,52 @@ public class PatientPanel extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-            loadPatients();
+         String keyword = txtSearch.getText().trim();
+
+    try {
+        LinkedList<Patient> list = patientDAO.searchPatientByName(keyword);
+
+        javax.swing.table.DefaultTableModel model =
+                (javax.swing.table.DefaultTableModel) tablePatients.getModel();
+
+        model.setRowCount(0);
+
+        for (Patient p : list) {
+            model.addRow(new Object[]{
+                p.getId(),
+                p.getCne(),
+                p.getPrenom(),
+                p.getNom(),
+                p.getPhone(),
+                p.getAge(),
+                p.getMail()
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur recherche !");
+        e.printStackTrace();
+    }
 
         
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         // TODO add your handling code here:
+        loadPatients();
+
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         String cne = JOptionPane.showInputDialog(this, "CNE :");
+    if (cne == null) return;
+
     String prenom = JOptionPane.showInputDialog(this, "Prénom :");
     String nom = JOptionPane.showInputDialog(this, "Nom :");
     String phone = JOptionPane.showInputDialog(this, "Téléphone :");
     String ageStr = JOptionPane.showInputDialog(this, "Âge :");
     String mail = JOptionPane.showInputDialog(this, "Email :");
-
-    if (cne == null) return;
 
     try {
         int age = Integer.parseInt(ageStr);
@@ -215,12 +315,13 @@ public class PatientPanel extends javax.swing.JFrame {
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Erreur ajout !");
+        e.printStackTrace();
     }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-        int row = tablePatients.getSelectedRow();
+          int row = tablePatients.getSelectedRow();
     if (row == -1) {
         JOptionPane.showMessageDialog(this, "Sélectionnez un patient.");
         return;
@@ -232,13 +333,13 @@ public class PatientPanel extends javax.swing.JFrame {
         Patient p = patientDAO.findPatientById(id);
 
         String cne = JOptionPane.showInputDialog(this, "CNE :", p.getCne());
+        if (cne == null) return;
+
         String prenom = JOptionPane.showInputDialog(this, "Prénom :", p.getPrenom());
         String nom = JOptionPane.showInputDialog(this, "Nom :", p.getNom());
         String phone = JOptionPane.showInputDialog(this, "Téléphone :", p.getPhone());
         String ageStr = JOptionPane.showInputDialog(this, "Âge :", p.getAge());
         String mail = JOptionPane.showInputDialog(this, "Email :", p.getMail());
-
-        if (cne == null) return;
 
         p.setCne(cne);
         p.setPrenom(prenom);
@@ -254,6 +355,7 @@ public class PatientPanel extends javax.swing.JFrame {
 
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Erreur modification !");
+        e.printStackTrace();
     }
     }//GEN-LAST:event_btnEditActionPerformed
 
@@ -279,10 +381,17 @@ public class PatientPanel extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erreur suppression !");
+            e.printStackTrace();
         }
     }
-
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        // Retour au Dashboard Assistant
+    new AssistantDashboard(utilisateur).setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -305,19 +414,19 @@ public class PatientPanel extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new PatientPanel().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablePatients;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

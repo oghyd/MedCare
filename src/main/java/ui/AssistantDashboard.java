@@ -4,22 +4,27 @@
  */
 package ui;
 
+import javax.swing.JOptionPane;
 import model.Utilisateur;
 
 /**
  *
  * @author idber
  */
-public class Assistant extends javax.swing.JFrame {
+public class AssistantDashboard extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Assistant.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AssistantDashboard.class.getName());
+    private final Utilisateur utilisateur;
 
     /**
      * Creates new form Assistant
      * @param u
      */
-    public Assistant(Utilisateur u) {
+    public AssistantDashboard(Utilisateur u) {
+        this.utilisateur = u;
         initComponents();
+    // Afficher nom + prénom
+    jLabel2.setText(u.getNom() + " " + u.getPrenom());
     }
 
     /**
@@ -33,10 +38,11 @@ public class Assistant extends javax.swing.JFrame {
 
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btnPatients = new javax.swing.JButton();
         btnConsultations = new javax.swing.JButton();
+        btnPatients = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         btnPayments = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         jButton4.setText("jButton4");
 
@@ -44,17 +50,17 @@ public class Assistant extends javax.swing.JFrame {
 
         jLabel1.setText("Espace Assistant");
 
-        btnPatients.setText("Gérer les patients");
-        btnPatients.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPatientsActionPerformed(evt);
-            }
-        });
-
         btnConsultations.setText("Gérer les rendez-vous");
         btnConsultations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultationsActionPerformed(evt);
+            }
+        });
+
+        btnPatients.setText("Gérer les patients");
+        btnPatients.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPatientsActionPerformed(evt);
             }
         });
 
@@ -77,56 +83,59 @@ public class Assistant extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(168, 168, 168)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(140, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnConsultations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPatients, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(113, 113, 113))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnLogout)
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnPayments, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(141, 141, 141))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(btnConsultations))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(btnPatients))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(btnPayments, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(280, 280, 280)
+                        .addComponent(btnLogout))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(160, 160, 160)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(28, 28, 28)
                 .addComponent(jLabel1)
-                .addGap(47, 47, 47)
-                .addComponent(btnPatients)
-                .addGap(31, 31, 31)
-                .addComponent(btnConsultations)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(btnConsultations)
+                .addGap(39, 39, 39)
+                .addComponent(btnPatients)
+                .addGap(37, 37, 37)
                 .addComponent(btnPayments)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(btnLogout)
-                .addGap(39, 39, 39))
+                .addGap(27, 27, 27)
+                .addComponent(btnLogout))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnPatientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPatientsActionPerformed
-        // TODO add your handling code here:
-         new ConsultationPanel().setVisible(true);
-    }//GEN-LAST:event_btnPatientsActionPerformed
-
     private void btnConsultationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultationsActionPerformed
         // TODO add your handling code here:
-         new PatientPanel().setVisible(true);
+         new ConsultationPanel().setVisible(true);
     }//GEN-LAST:event_btnConsultationsActionPerformed
+
+    private void btnPatientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPatientsActionPerformed
+        // TODO add your handling code here:
+        new PatientPanel(utilisateur).setVisible(true);
+    }//GEN-LAST:event_btnPatientsActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
-        new Login().setVisible(true);
+        new LoginPanel().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
 
@@ -155,11 +164,12 @@ public class Assistant extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        Utilisateur u = null;
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Assistant(u).setVisible(true));
-    }
+        java.awt.EventQueue.invokeLater(() -> {
+        JOptionPane.showMessageDialog(null,
+                "Veuillez lancer l'application depuis LoginPanel.",
+                "Erreur", JOptionPane.ERROR_MESSAGE);
+    });
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultations;
@@ -168,5 +178,6 @@ public class Assistant extends javax.swing.JFrame {
     private javax.swing.JButton btnPayments;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }

@@ -10,16 +10,22 @@ import model.Utilisateur;
  *
  * @author idber
  */
-public class Medecin extends javax.swing.JFrame {
+public class DoctorDashboard extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Medecin.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DoctorDashboard.class.getName());
+    
+     private final Utilisateur utilisateur;
 
     /**
-     * Creates new form Medecin
+     * Constructeur utilisé après login.
      */
-    public Medecin(Utilisateur u) {
+    public DoctorDashboard(Utilisateur u) {
+        this.utilisateur = u;
         initComponents();
+        lblDoctorName.setText(u.getNom() + " " + u.getPrenom());
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -30,22 +36,30 @@ public class Medecin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        lblDoctorName = new javax.swing.JLabel();
+        btnMyConsultations = new javax.swing.JButton();
+        btnMonthlyReport = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Espace Médecin");
+        lblDoctorName.setText("Bonjour Dr");
 
-        jButton1.setText("Consultations du jour");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnMyConsultations.setText("Consulter mes consultations");
+        btnMyConsultations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnMyConsultationsActionPerformed(evt);
             }
         });
 
-        btnLogout.setText("Déconnexion");
+        btnMonthlyReport.setText("Voir le rapport mensuel");
+        btnMonthlyReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMonthlyReportActionPerformed(evt);
+            }
+        });
+
+        btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogoutActionPerformed(evt);
@@ -57,44 +71,56 @@ public class Medecin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(129, 129, 129)
+                        .addComponent(btnMyConsultations))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(lblDoctorName, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(90, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(147, 147, 147))
+                        .addComponent(btnMonthlyReport)
+                        .addGap(100, 100, 100))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnLogout)
-                        .addGap(28, 28, 28))))
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1)
-                .addGap(67, 67, 67)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
+                .addComponent(lblDoctorName)
+                .addGap(26, 26, 26)
+                .addComponent(btnMyConsultations)
+                .addGap(42, 42, 42)
+                .addComponent(btnMonthlyReport)
+                .addGap(56, 56, 56)
                 .addComponent(btnLogout)
-                .addGap(38, 38, 38))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:                                          
-    new Login().setVisible(true);
-    this.dispose();
-    }//GEN-LAST:event_btnLogoutActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnMyConsultationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMyConsultationsActionPerformed
         // TODO add your handling code here:
-        new PatientPanel().setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        new DoctorPanel(utilisateur).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnMyConsultationsActionPerformed
+
+    private void btnMonthlyReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMonthlyReportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMonthlyReportActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        new LoginPanel().setVisible(true);
+        this.dispose();;
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -116,15 +142,14 @@ public class Medecin extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        Utilisateur u = null;
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Medecin(u).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnMonthlyReport;
+    private javax.swing.JButton btnMyConsultations;
+    private javax.swing.JLabel lblDoctorName;
     // End of variables declaration//GEN-END:variables
 }

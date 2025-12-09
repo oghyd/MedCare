@@ -4,20 +4,78 @@
  */
 package ui;
 
+import dao.impl.ConsultationDAOImpl;
+import dao.impl.PatientDAOImpl;
+import dao.impl.UtilisateurDAOImpl;
+import dao.interfaces.ConsultationDAO;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Consultation;
+import model.Patient;
+import dao.impl.CategorieConsultationDAOImpl;
+import dao.interfaces.CategorieConsultationDAO;
+
+
 /**
  *
  * @author idber
  */
 public class PaymentPanel extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PaymentPanel.class.getName());
+   private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PaymentPanel.class.getName());
+   private final PatientDAOImpl patientDAO = new PatientDAOImpl();
+   private final UtilisateurDAOImpl userDAO = new UtilisateurDAOImpl();
+   private final ConsultationDAO consultationDAO = new ConsultationDAOImpl();
+   private final CategorieConsultationDAO categorieDAO = new CategorieConsultationDAOImpl();
+
+   
+
 
     /**
      * Creates new form PaymentPanelPaymentPanel
      */
     public PaymentPanel() {
-        initComponents();
+        initComponents();    
+        loadPayments();
     }
+private void loadPayments() {
+    try {
+        LinkedList<Consultation> list = consultationDAO.findAllConsultations();
+
+        DefaultTableModel model = (DefaultTableModel) tablePatients.getModel();
+        model.setRowCount(0);
+
+        for (Consultation c : list) {
+
+            // Charger patient
+            Patient p = patientDAO.findPatientById(c.getIdPatient());
+            String nom = p != null ? p.getNom() : "N/A";
+            String prenom = p != null ? p.getPrenom() : "N/A";
+
+            // Charger catégorie (temporaire → affichage ID)
+           String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategorie()).getCategorie();
+
+            // Ajouter ligne
+            model.addRow(new Object[]{
+                c.getIdC(),                // ID consultation
+                nom,                       // Nom patient
+                prenom,                    // Prénom patient
+                categorieName,             // Catégorie (provisoire)
+                c.getDateConsultation(),   // Date
+                c.getPrix(),               // Prix
+                c.isPaid() ? "OUI" : "NON" // Payé
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+                "Erreur lors du chargement des paiements !");
+        e.printStackTrace();
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,21 +86,358 @@ public class PaymentPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablePatients = new javax.swing.JTable();
+        txtSearchPatient = new javax.swing.JTextField();
+        btnRefresh = new javax.swing.JButton();
+        btnMarkPaid = new javax.swing.JButton();
+        btnFilterPaid = new javax.swing.JButton();
+        btnFilterUnpaid = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        btnSearch = new javax.swing.JButton();
+        btnMarkUnpaid = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tablePatients.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nom", "Prenom", "Categorie", "Date de Consultation", "Prix", "Paye"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablePatients);
+
+        txtSearchPatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchPatientActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Rafraîchir");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        btnMarkPaid.setText("Marquer payé");
+        btnMarkPaid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarkPaidActionPerformed(evt);
+            }
+        });
+
+        btnFilterPaid.setText("Filtrer Payés");
+        btnFilterPaid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterPaidActionPerformed(evt);
+            }
+        });
+
+        btnFilterUnpaid.setText("Filtrer Non payés");
+        btnFilterUnpaid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterUnpaidActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Nom du patient :");
+
+        btnSearch.setText("Chercher");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        btnMarkUnpaid.setText("Marquer impayé");
+        btnMarkUnpaid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarkUnpaidActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtSearchPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(btnSearch)
+                                .addGap(30, 30, 30)
+                                .addComponent(btnMarkPaid, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnFilterPaid))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnFilterUnpaid, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnMarkUnpaid, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(108, 108, 108)
+                        .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtSearchPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
+                        .addComponent(btnMarkPaid)
+                        .addComponent(btnSearch))
+                    .addComponent(btnMarkUnpaid))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFilterUnpaid)
+                    .addComponent(btnFilterPaid))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        loadPayments();
+
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void txtSearchPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchPatientActionPerformed
+        // TODO add your handling code here:
+        String keyword = txtSearchPatient.getText().trim();
+
+    try {
+        LinkedList<Patient> list = patientDAO.searchPatientByName(keyword);
+
+        javax.swing.table.DefaultTableModel model =
+                (javax.swing.table.DefaultTableModel) tablePatients.getModel();
+
+        model.setRowCount(0);
+
+        for (Patient p : list) {
+            model.addRow(new Object[]{
+                p.getId(),
+                p.getCne(),
+                p.getPrenom(),
+                p.getNom(),
+                p.getPhone(),
+                p.getAge(),
+                p.getMail()
+            });
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Erreur recherche !");
+    }
+    }//GEN-LAST:event_txtSearchPatientActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+       String keyword = txtSearchPatient.getText().trim();
+
+    if (keyword.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Entrez un nom !");
+        return;
+    }
+
+    try {
+        LinkedList<Patient> patients = patientDAO.searchPatientByName(keyword);
+
+        DefaultTableModel model = (DefaultTableModel) tablePatients.getModel();
+        model.setRowCount(0);
+
+        for (Patient p : patients) {
+
+            LinkedList<Consultation> consultations = consultationDAO.findByPatient(p.getId());
+
+            for (Consultation c : consultations) {
+
+String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategorie()).getCategorie();
+
+                model.addRow(new Object[]{
+                    c.getIdC(),
+                    p.getNom(),
+                    p.getPrenom(),
+                    categorieName,
+                    c.getDateConsultation(),
+                    c.getPrix(),
+                    c.isPaid() ? "OUI" : "NON"
+                });
+            }
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur recherche !");
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnFilterUnpaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterUnpaidActionPerformed
+        // TODO add your handling code here:
+         try {
+        LinkedList<Consultation> list = consultationDAO.findAllConsultations();
+
+        DefaultTableModel model = (DefaultTableModel) tablePatients.getModel();
+        model.setRowCount(0);
+
+        for (Consultation c : list) {
+            if (!c.isPaid()) {
+
+                Patient p = patientDAO.findPatientById(c.getIdPatient());
+String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategorie()).getCategorie();
+
+                model.addRow(new Object[]{
+                    c.getIdC(),
+                    p.getNom(),
+                    p.getPrenom(),
+                    categorieName,
+                    c.getDateConsultation(),
+                    c.getPrix(),
+                    "NON"
+               
+});
+
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Erreur filtrage !");
+    }
+    }//GEN-LAST:event_btnFilterUnpaidActionPerformed
+
+    private void btnMarkPaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkPaidActionPerformed
+        // TODO add your handling code here:
+        int row = tablePatients.getSelectedRow();
+
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionnez une consultation !");
+        return;
+    }
+
+    int idConsultation = (int) tablePatients.getValueAt(row, 0);
+
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Marquer cette consultation comme payée ?",
+            "Confirmation",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        try {
+            consultationDAO.markAsPaid(idConsultation, java.time.LocalDate.now());
+            JOptionPane.showMessageDialog(this, "Paiement enregistré !");
+            loadPayments();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'enregistrement !");
+            e.printStackTrace();
+        }
+    }
+
+    
+    }//GEN-LAST:event_btnMarkPaidActionPerformed
+
+    private void btnFilterPaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterPaidActionPerformed
+        // TODO add your handling code here:
+         try {
+        LinkedList<Consultation> list = consultationDAO.findAllConsultations();
+
+        DefaultTableModel model = (DefaultTableModel) tablePatients.getModel();
+        model.setRowCount(0);
+
+        for (Consultation c : list) {
+            if (c.isPaid()) {
+
+                Patient p = patientDAO.findPatientById(c.getIdPatient());
+String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategorie()).getCategorie();
+
+                model.addRow(new Object[]{
+                    c.getIdC(),
+                    p.getNom(),
+                    p.getPrenom(),
+                    categorieName,
+                    c.getDateConsultation(),
+                    c.getPrix(),
+                    "OUI"
+                });
+            }
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur filtrage !");
+        e.printStackTrace();
+    }
+        
+   
+    }//GEN-LAST:event_btnFilterPaidActionPerformed
+
+    private void btnMarkUnpaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkUnpaidActionPerformed
+        // TODO add your handling code here:
+
+    int row = tablePatients.getSelectedRow();
+
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionnez une consultation !");
+        return;
+    }
+
+    int idConsultation = (int) tablePatients.getValueAt(row, 0);
+
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Marquer cette consultation comme NON payée ?",
+            "Confirmation",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        try {
+
+            java.sql.Connection conn = db.Connection.connect();
+            String sql = "UPDATE consultation SET paid = 0, date_paiement = NULL WHERE id = ?";
+            java.sql.PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, idConsultation);
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Consultation marquée comme NON payée !");
+            loadPayments();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'opération !");
+            e.printStackTrace();
+        }
+    }
+    }//GEN-LAST:event_btnMarkUnpaidActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +465,15 @@ public class PaymentPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFilterPaid;
+    private javax.swing.JButton btnFilterUnpaid;
+    private javax.swing.JButton btnMarkPaid;
+    private javax.swing.JButton btnMarkUnpaid;
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tablePatients;
+    private javax.swing.JTextField txtSearchPatient;
     // End of variables declaration//GEN-END:variables
 }

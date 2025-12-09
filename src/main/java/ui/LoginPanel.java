@@ -12,15 +12,16 @@ import model.Utilisateur;
  *
  * @author idber
  */
-public class Login extends javax.swing.JFrame {
+public class LoginPanel extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
-
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPanel.class.getName());
+    
     /**
      * Creates new form Login
      */
-    public Login() {
+    public LoginPanel() {
         initComponents();
+         lblError.setText("");
     }
 
     /**
@@ -32,14 +33,17 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jColorChooser1 = new javax.swing.JColorChooser();
         jLabel1 = new javax.swing.JLabel();
         txtLogin = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
         lblError = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(59, 31, 21));
 
         jLabel1.setText("Login");
 
@@ -57,6 +61,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        btnLogin.setForeground(new java.awt.Color(0, 204, 0));
         btnLogin.setText("Log in");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,14 +69,14 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Snap ITC", 0, 36)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel3.setText("Bienvenue");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -84,11 +89,22 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(txtLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
                         .addComponent(txtPassword)))
                 .addContainerGap(63, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(74, 74, 74))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
+                .addGap(25, 25, 25)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -108,45 +124,25 @@ public class Login extends javax.swing.JFrame {
 
     private void txtLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLoginActionPerformed
         // TODO add your handling code here:
-                                               
-    String login = txtLogin.getText();
-    String password = new String(txtPassword.getPassword());
-
-    if (login.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.");
-        return;
-    }
-
-    Service.AuthService auth = new Service.AuthService();
-    model.Utilisateur u = auth.login(login, password);
-
-    if (u == null) {
-        JOptionPane.showMessageDialog(this, "Identifiants incorrects.");
-        return;
-    }
-
-    if (u.isAssistant()) {
-        new ui.Assistant(u).setVisible(true);
-    } else if (u.isMedecin()) {
-        new ui.Medecin(u).setVisible(true);
-    } else {
-        JOptionPane.showMessageDialog(this, "Rôle inconnu !");
-    }
-
-    this.dispose();
-
-    
+            btnLoginActionPerformed(evt);
 
     }//GEN-LAST:event_txtLoginActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
+        btnLoginActionPerformed(evt);
+
     }//GEN-LAST:event_txtPasswordActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        String login = txtLogin.getText();
-    String pass = String.valueOf(txtPassword.getPassword());
+        String login = txtLogin.getText().trim();
+    String pass = new String(txtPassword.getPassword());
+
+    if (login.isEmpty() || pass.isEmpty()) {
+        lblError.setText("Veuillez remplir tous les champs.");
+        return;
+    }
 
     AuthService auth = new AuthService();
     Utilisateur u = auth.login(login, pass);
@@ -155,14 +151,27 @@ public class Login extends javax.swing.JFrame {
         lblError.setText("Login ou mot de passe incorrect.");
         return;
     }
-    
+
+    // Redirection selon rôle
     if (u.isAssistant()) {
-        new Assistant(u).setVisible(true);
+        new AssistantDashboard(u).setVisible(true);
         this.dispose();
-    } else if (u.isMedecin()) {
-        new Medecin(u).setVisible(true);
-        this.dispose();
+        return;
     }
+
+    if (u.isMedecin()) {
+        new DoctorDashboard(u).setVisible(true);
+        this.dispose();
+        return;
+    }
+
+    if (u.isAdmin()) {
+        new AdminDashboard(u).setVisible(true);
+        this.dispose();
+        return;
+    }
+
+    JOptionPane.showMessageDialog(this, "Rôle inconnu !");
        
     }//GEN-LAST:event_btnLoginActionPerformed
 
@@ -188,13 +197,15 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Login().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new LoginPanel().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblError;
     private javax.swing.JTextField txtLogin;
     private javax.swing.JPasswordField txtPassword;

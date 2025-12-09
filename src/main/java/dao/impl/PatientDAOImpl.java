@@ -22,7 +22,7 @@ public class PatientDAOImpl implements PatientDAO{
         String SQL = "INSERT INTO patient (cne, prenom, nom, phone, age, mail) VALUES (?, ?, ?, ?, ?, ?)";
   
         try (java.sql.Connection conn = Connection.connect();
-             PreparedStatement pstm = conn.prepareStatement(SQL)){
+             PreparedStatement pstm = conn.prepareStatement(SQL,Statement.RETURN_GENERATED_KEYS)){
             
             pstm.setString(1, patient.getCne());
             pstm.setString(2, patient.getPrenom());
@@ -81,8 +81,7 @@ public class PatientDAOImpl implements PatientDAO{
 
     @Override
     public LinkedList<Patient> findAllPatients() throws SQLException {
-        
-        String SQL = "SELECT * FROM patient ORDER BY nom, prenom";
+         String SQL = "SELECT * FROM patient ORDER BY id";
 
         LinkedList<Patient> PatientsList = new LinkedList<>();
 
@@ -104,7 +103,7 @@ public class PatientDAOImpl implements PatientDAO{
 
     @Override
     public LinkedList<Patient> searchPatientByName(String keyword) throws SQLException {
-        String SQL = "SELECT * FROM patient WHERE nom LIKE ? OR prenom LIKE ? ORDER BY nom, prenom";
+        String SQL = "SELECT * FROM patient WHERE nom LIKE ? OR prenom LIKE ? ORDER BY id";
 
         LinkedList<Patient> PatientsByNameSearchList = new LinkedList<>();
 

@@ -1,0 +1,769 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package ui;
+
+import dao.impl.CategorieConsultationDAOImpl;
+import dao.impl.ConsultationDAOImpl;
+import dao.impl.PatientDAOImpl;
+import dao.impl.UtilisateurDAOImpl;
+import dao.interfaces.CategorieConsultationDAO;
+import dao.interfaces.ConsultationDAO;
+import dao.interfaces.PatientDAO;
+import dao.interfaces.UtilisateurDAO;
+import java.time.LocalDate;
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Consultation;
+import model.Patient;
+
+/**
+ *
+ * @author idber
+ */
+public class AppointmentPanel extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AppointmentPanel.class.getName());
+
+    
+    //  Creates new form AppointmentPanel
+     
+    public AppointmentPanel() {
+        initComponents();
+        loadConsultations();
+        loadComboBoxes();
+    }
+    private void loadComboBoxes() {
+    try {
+        // Patients
+        javax.swing.DefaultComboBoxModel<String> pm = new javax.swing.DefaultComboBoxModel<>();
+        // option pour créer un nouveau patient directement depuis la combo
+        pm.addElement("-- Nouveau patient --");
+        LinkedList<model.Patient> patients = patientDAO.findAllPatients();
+        for (model.Patient p : patients) {
+            // format "id: Nom Prenom"
+            pm.addElement(p.getId() + ": " + p.getNom() + " " + p.getPrenom());
+        }
+        cmbPatient.setModel(pm);
+
+        // Médecins (tous les utilisateurs qui ont role MEDECIN)
+        javax.swing.DefaultComboBoxModel<String> um = new javax.swing.DefaultComboBoxModel<>();
+        um.addElement("-- Choisir médecin --");
+        LinkedList<model.Utilisateur> medecins = utilisateurDAO.getAllMedecins();
+        for (model.Utilisateur m : medecins) {
+            um.addElement(m.getId() + ": " + m.getNom() + " " + m.getPrenom());
+        }
+        cmbMedecin.setModel(um);
+
+        // Catégories
+        javax.swing.DefaultComboBoxModel<String> cm = new javax.swing.DefaultComboBoxModel<>();
+        cm.addElement("-- Choisir catégorie --");
+        LinkedList<model.CategorieConsultation> catList = categorieDAO.findAllCategorieConsultation();
+        for (model.CategorieConsultation cat : catList) {
+            cm.addElement(cat.getId() + ": " + cat.getCategorie());
+        }
+        cmbCategorie.setModel(cm);
+
+        // Status (pour création rapide)
+        javax.swing.DefaultComboBoxModel<String> sm = new javax.swing.DefaultComboBoxModel<>();
+        sm.addElement("PLANIFIEE");
+        sm.addElement("TERMINE");
+        sm.addElement("ANNULE");
+        cmbStatus.setModel(sm);
+
+        // (Optionnel) filtres statut - réutiliser le même modèle
+        javax.swing.DefaultComboBoxModel<String> fsm = new javax.swing.DefaultComboBoxModel<>();
+        fsm.addElement("TOUS");
+        fsm.addElement("PLANIFIEE");
+        fsm.addElement("TERMINE");
+        fsm.addElement("ANNULE");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur chargement combos : " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+
+private void loadConsultations() {
+    try {
+        LinkedList<Consultation> list = consultationDAO.findAllConsultations();
+
+        DefaultTableModel model = (DefaultTableModel) tableConsultations.getModel();
+        model.setRowCount(0);
+
+        for (Consultation c : list) {
+            // récupère patient et médecin (nom + prénom)
+            model.Patient p = patientDAO.findPatientById(c.getIdPatient());
+            model.Utilisateur med = utilisateurDAO.findMedecinById(c.getIdMedecin());
+
+            String patientFull = (p != null) ? (p.getNom() + " " + p.getPrenom()) : "Inconnu";
+            String medFull = (med != null) ? (med.getNom() + " " + med.getPrenom()) : "Inconnu";
+
+            // récupère le nom de la catégorie
+            model.CategorieConsultation cat = categorieDAO.findCategorieConsultationById(c.getIdcategorie());
+            String categorieName = (cat != null) ? cat.getCategorie() : "Inconnue";
+
+            model.addRow(new Object[]{
+                c.getIdC(),
+                patientFull,
+                medFull,
+                categorieName,
+                c.getDateConsultation(),
+                c.getPrix(),
+                c.getStatus(),
+                c.isPaid() ? "OUI" : "NON"
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur chargement consultations !");
+        e.printStackTrace();
+    }
+}
+
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        txtDate = new javax.swing.JTextField();
+        btnFilterDate = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        btnFilterPatient = new javax.swing.JButton();
+        btnFilterStatus = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableConsultations = new javax.swing.JTable();
+        btnAdd = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cmbPatient = new javax.swing.JComboBox<>();
+        cmbMedecin = new javax.swing.JComboBox<>();
+        cmbCategorie = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        cmbStatus = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtFilterDate = new javax.swing.JTextField();
+        txtFilterPatient = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtPrix = new javax.swing.JTextField();
+        cmbFilterStatus = new javax.swing.JComboBox<>();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Date");
+
+        txtDate.setText("AAAA-MM-JJ");
+        txtDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateActionPerformed(evt);
+            }
+        });
+
+        btnFilterDate.setText("Filter la date");
+        btnFilterDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterDateActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Patient ID");
+
+        btnFilterPatient.setText("Filter Patient");
+        btnFilterPatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterPatientActionPerformed(evt);
+            }
+        });
+
+        btnFilterStatus.setText("Filter le Status");
+        btnFilterStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterStatusActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Satut");
+
+        tableConsultations.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Patient", "Medecin", "Catégorie", "Date", "Prix", "Statut", "Payé"
+            }
+        ));
+        jScrollPane1.setViewportView(tableConsultations);
+
+        btnAdd.setText("Ajouter rendez-vous");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnEdit.setText("Modifier");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setText("Supprimer");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Recharger la liste");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Médecin");
+
+        cmbPatient.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPatientActionPerformed(evt);
+            }
+        });
+
+        cmbMedecin.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        cmbCategorie.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCategorie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCategorieActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Catégorie");
+
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PLANIFIEE ", "Item 2", "TERMINE ", "ANNULE " }));
+
+        jLabel6.setText("───────────────────────────     Filtres   ──────────────────────────────────────");
+
+        jLabel7.setText("─────────────────────────── Ajouter un Rendez-vous ─────────────────────────────");
+
+        jLabel8.setText("───────────────────────────    TABLE Consultations    ─────────────────────────────");
+
+        txtFilterPatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFilterPatientActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Prix");
+
+        txtPrix.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrixActionPerformed(evt);
+            }
+        });
+
+        cmbFilterStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PLANIFIEE", "TERMINE", "ANNULE" }));
+        cmbFilterStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFilterStatusActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(155, 155, 155)
+                .addComponent(btnAdd)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(49, 49, 49)
+                                .addComponent(btnEdit)
+                                .addGap(132, 132, 132)
+                                .addComponent(btnDelete)
+                                .addGap(102, 102, 102)
+                                .addComponent(btnRefresh)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtFilterDate)
+                            .addComponent(txtFilterPatient, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
+                            .addComponent(cmbFilterStatus, 0, 1, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnFilterPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnFilterStatus)
+                            .addComponent(btnFilterDate, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(143, 143, 143))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(125, 125, 125)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(113, 113, 113)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtDate)
+                                    .addComponent(cmbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbPatient, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbMedecin, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbCategorie, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtPrix)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cmbPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cmbMedecin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtPrix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cmbStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFilterDate)
+                    .addComponent(txtFilterDate, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFilterPatient)
+                    .addComponent(txtFilterPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFilterStatus)
+                    .addComponent(cmbFilterStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEdit)
+                    .addComponent(btnDelete)
+                    .addComponent(btnRefresh))
+                .addGap(18, 18, 18))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+private final ConsultationDAO consultationDAO = new ConsultationDAOImpl();
+private final PatientDAO patientDAO = new PatientDAOImpl();
+private final UtilisateurDAO utilisateurDAO = new UtilisateurDAOImpl();
+private final CategorieConsultationDAO categorieDAO = new CategorieConsultationDAOImpl();
+
+    private void txtDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+     loadComboBoxes();
+     loadConsultations();
+
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+         try {
+        // Patient sélectionné
+        String patientSel = (String) cmbPatient.getSelectedItem();
+        int patientId = -1;
+
+        if (patientSel == null) {
+            JOptionPane.showMessageDialog(this, "Sélectionnez ou créez un patient.");
+            return;
+        }
+
+        if (patientSel.startsWith("--")) {
+            // nouveau patient
+            String cne = JOptionPane.showInputDialog(this, "CNE :");
+            if (cne == null) return;
+            String prenom = JOptionPane.showInputDialog(this, "Prénom :");
+            if (prenom == null) return;
+            String nom = JOptionPane.showInputDialog(this, "Nom :");
+            if (nom == null) return;
+            String phone = JOptionPane.showInputDialog(this, "Téléphone :");
+            String ageStr = JOptionPane.showInputDialog(this, "Âge :");
+            String mail = JOptionPane.showInputDialog(this, "Email :");
+
+            int age = 0;
+            try { age = Integer.parseInt(ageStr); } catch (Exception ex) { age = 0; }
+
+            model.Patient newP = new model.Patient(cne, prenom, nom, phone, age, mail);
+            boolean created = patientDAO.createPatient(newP);
+            if (!created) {
+                JOptionPane.showMessageDialog(this, "Erreur création patient !");
+                return;
+            }
+            // patientDAO doit avoir mis l'id généré sur newP
+            patientId = newP.getId();
+        } else {
+            // format "id: Nom Prenom"
+            patientId = Integer.parseInt(patientSel.split(":")[0].trim());
+        }
+
+        // médecin
+        String medSel = (String) cmbMedecin.getSelectedItem();
+        if (medSel == null || medSel.startsWith("--")) {
+            JOptionPane.showMessageDialog(this, "Sélectionnez un médecin.");
+            return;
+        }
+        int medId = Integer.parseInt(medSel.split(":")[0].trim());
+
+        // catégorie
+        String catSel = (String) cmbCategorie.getSelectedItem();
+        if (catSel == null || catSel.startsWith("--")) {
+            JOptionPane.showMessageDialog(this, "Sélectionnez une catégorie.");
+            return;
+        }
+        int catId = Integer.parseInt(catSel.split(":")[0].trim());
+
+        // date
+        String dateStr = txtDate.getText().trim();
+        java.time.LocalDate date;
+        try {
+            date = java.time.LocalDate.parse(dateStr);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Format date invalide (AAAA-MM-JJ).");
+            return;
+        }
+
+        // prix
+        double prix = 0.0;
+        try {
+            prix = Double.parseDouble(txtPrix.getText().trim());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Prix invalide.");
+            return;
+        }
+
+        // statut
+        String statut = (String) cmbStatus.getSelectedItem();
+        if (statut == null) statut = "PLANIFIEE";
+
+        // vérifier disponibilité (utilise ConsultationDAO.isSlotAvailable)
+        if (!consultationDAO.isSlotAvailable(medId, date.atStartOfDay())) {
+            JOptionPane.showMessageDialog(this, "Médecin indisponible ce jour.");
+            return;
+        }
+
+        // description par défaut
+        String description = "RAS";
+
+        model.Consultation c = new model.Consultation(patientId, medId, catId, date, null, description, statut, prix, false);
+
+        boolean created = consultationDAO.createConsultation(c);
+        if (created) {
+            JOptionPane.showMessageDialog(this, "Rendez-vous créé !");
+            // recharge combos (nouveau patient) et table
+            loadComboBoxes();
+            loadConsultations();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erreur création rendez-vous !");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur ajout : " + e.getMessage());
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+         int row = tableConsultations.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionnez une consultation.");
+        return;
+    }
+
+    int id = (int) tableConsultations.getValueAt(row, 0);
+    try {
+        model.Consultation c = consultationDAO.findConsultationById(id);
+        if (c == null) {
+            JOptionPane.showMessageDialog(this, "Consultation introuvable.");
+            return;
+        }
+
+        // nouvelle date
+        String dateStr = JOptionPane.showInputDialog(this, "Date (AAAA-MM-JJ) :", c.getDateConsultation());
+        if (dateStr == null) return;
+        java.time.LocalDate newDate = java.time.LocalDate.parse(dateStr);
+
+        // verifier dispo si date change
+        if (!newDate.equals(c.getDateConsultation())) {
+            if (!consultationDAO.isSlotAvailable(c.getIdMedecin(), newDate.atStartOfDay())) {
+                JOptionPane.showMessageDialog(this, "Médecin indisponible à cette date !");
+                return;
+            }
+            c.setDateConsultation(newDate);
+        }
+
+        String desc = JOptionPane.showInputDialog(this, "Description :", c.getDescription());
+        if (desc != null) c.setDescription(desc);
+
+        String prixStr = JOptionPane.showInputDialog(this, "Prix :", c.getPrix());
+        if (prixStr != null) c.setPrix(Double.parseDouble(prixStr));
+
+        String stat = (String) JOptionPane.showInputDialog(this, "Statut (PLANIFIEE/TERMINE/ANNULE) :", c.getStatus());
+        if (stat != null) c.setStatus(stat);
+
+        if (consultationDAO.updateConsultation(c)) {
+            JOptionPane.showMessageDialog(this, "Consultation modifiée !");
+            loadConsultations();
+        } else {
+            JOptionPane.showMessageDialog(this, "Erreur modification !");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur modification : " + e.getMessage());
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int row = tableConsultations.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionnez une consultation.");
+        return;
+    }
+
+    int id = (int) tableConsultations.getValueAt(row, 0);
+    if (JOptionPane.showConfirmDialog(this, "Confirmer suppression ?") == JOptionPane.YES_OPTION) {
+        try {
+            if (consultationDAO.deleteConsultation(id)) {
+                JOptionPane.showMessageDialog(this, "Consultation supprimée !");
+                loadConsultations();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erreur suppression !");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur suppression : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void cmbPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPatientActionPerformed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_cmbPatientActionPerformed
+
+    private void btnFilterStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterStatusActionPerformed
+        // TODO add your handling code here:
+        try {
+            String status = (String) cmbFilterStatus.getSelectedItem();
+            if ("TOUS".equals(status)) {
+                loadConsultations();
+                return;
+            }
+            LinkedList<Consultation> list = consultationDAO.findByStatus(status);
+            DefaultTableModel model = (DefaultTableModel) tableConsultations.getModel();
+            model.setRowCount(0);
+            for (Consultation c : list) {
+                model.Patient p = patientDAO.findPatientById(c.getIdPatient());
+                model.Utilisateur med = utilisateurDAO.findMedecinById(c.getIdMedecin());
+                model.CategorieConsultation cat = categorieDAO.findCategorieConsultationById(c.getIdcategorie());
+                String patientFull = p != null ? p.getNom() + " " + p.getPrenom() : "Inconnu";
+                String medFull = med != null ? med.getNom() + " " + med.getPrenom() : "Inconnu";
+                String catName = cat != null ? cat.getCategorie() : "Inconnue";
+                model.addRow(new Object[]{
+                    c.getIdC(), patientFull, medFull, catName, c.getDateConsultation(), c.getPrix(), c.getStatus(), c.isPaid() ? "OUI" : "NON"
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur filtre statut.");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnFilterStatusActionPerformed
+
+    private void btnFilterPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterPatientActionPerformed
+        // TODO add your handling code here:
+        try {
+            String s = txtFilterPatient.getText().trim();
+            if (s.isEmpty()) {
+                loadConsultations();
+                return;
+            }
+            // recherche patients par nom/prenom (réutilise DAO)
+            LinkedList<model.Patient> found = patientDAO.searchPatientByName(s);
+            DefaultTableModel model = (DefaultTableModel) tableConsultations.getModel();
+            model.setRowCount(0);
+            for (model.Patient p : found) {
+                LinkedList<Consultation> consultations = consultationDAO.findByPatient(p.getId());
+                for (Consultation c : consultations) {
+                    model.Utilisateur med = utilisateurDAO.findMedecinById(c.getIdMedecin());
+                    model.CategorieConsultation cat = categorieDAO.findCategorieConsultationById(c.getIdcategorie());
+                    String patientFull = p.getNom() + " " + p.getPrenom();
+                    String medFull = med != null ? med.getNom() + " " + med.getPrenom() : "Inconnu";
+                    String catName = cat != null ? cat.getCategorie() : "Inconnue";
+                    model.addRow(new Object[]{
+                        c.getIdC(), patientFull, medFull, catName, c.getDateConsultation(), c.getPrix(), c.getStatus(), c.isPaid() ? "OUI" : "NON"
+                    });
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erreur filtre patient.");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnFilterPatientActionPerformed
+
+    private void btnFilterDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterDateActionPerformed
+        // TODO add your handling code here:
+        try {
+            String dateStr = txtFilterDate.getText().trim();
+            java.time.LocalDate date = java.time.LocalDate.parse(dateStr);
+            LinkedList<Consultation> list = consultationDAO.findByDate(date);
+
+            DefaultTableModel model = (DefaultTableModel) tableConsultations.getModel();
+            model.setRowCount(0);
+            for (Consultation c : list) {
+                model.Patient p = patientDAO.findPatientById(c.getIdPatient());
+                model.Utilisateur med = utilisateurDAO.findMedecinById(c.getIdMedecin());
+                model.CategorieConsultation cat = categorieDAO.findCategorieConsultationById(c.getIdcategorie());
+                String patientFull = p != null ? p.getNom() + " " + p.getPrenom() : "Inconnu";
+                String medFull = med != null ? med.getNom() + " " + med.getPrenom() : "Inconnu";
+                String catName = cat != null ? cat.getCategorie() : "Inconnue";
+
+                model.addRow(new Object[]{
+                    c.getIdC(), patientFull, medFull, catName, c.getDateConsultation(), c.getPrix(), c.getStatus(), c.isPaid() ? "OUI" : "NON"
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Format date invalide (AAAA-MM-JJ)");
+        }
+
+    }//GEN-LAST:event_btnFilterDateActionPerformed
+
+    private void txtFilterPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterPatientActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFilterPatientActionPerformed
+
+    private void txtPrixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrixActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrixActionPerformed
+
+    private void cmbFilterStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFilterStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbFilterStatusActionPerformed
+
+    private void cmbCategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategorieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCategorieActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new AppointmentPanel().setVisible(true));
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnFilterDate;
+    private javax.swing.JButton btnFilterPatient;
+    private javax.swing.JButton btnFilterStatus;
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JComboBox<String> cmbCategorie;
+    private javax.swing.JComboBox<String> cmbFilterStatus;
+    private javax.swing.JComboBox<String> cmbMedecin;
+    private javax.swing.JComboBox<String> cmbPatient;
+    private javax.swing.JComboBox<String> cmbStatus;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tableConsultations;
+    private javax.swing.JTextField txtDate;
+    private javax.swing.JTextField txtFilterDate;
+    private javax.swing.JTextField txtFilterPatient;
+    private javax.swing.JTextField txtPrix;
+    // End of variables declaration//GEN-END:variables
+}
