@@ -48,14 +48,18 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        btnAdmin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 0, 255));
         jLabel1.setText("Espace Administrateur");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 0, -1, -1));
 
         lblAdminName.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        getContentPane().add(lblAdminName, new org.netbeans.lib.awtextra.AbsoluteConstraints(173, 54, 170, 18));
 
         btnMedecins.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnMedecins.setText("Gérer les médecins");
@@ -64,6 +68,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnMedecinsActionPerformed(evt);
             }
         });
+        getContentPane().add(btnMedecins, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 103, -1, -1));
 
         btnAssistants.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAssistants.setText("Gérer les assistant");
@@ -72,12 +77,16 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnAssistantsActionPerformed(evt);
             }
         });
+        getContentPane().add(btnAssistants, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 103, -1, -1));
 
-        jLabel7.setText("─────────────────────────── Gestion Médicale ─────────────────────────");
+        jLabel7.setText("──────────────────────────────── Gestion Médicale ─────────────────────────");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 148, 606, -1));
 
-        jLabel8.setText("──────────────────────────── Gestion du Personnel ──────────────────────────");
+        jLabel8.setText("─────────────────────────────── Gestion du Personnel ──────────────────────────");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 78, -1, -1));
 
         jLabel10.setText("────────────────────────  Rapports & Statistiques ────────────────────────────");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 235, 606, -1));
 
         btnPatients.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPatients.setText("Gérer les patients");
@@ -86,6 +95,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnPatientsActionPerformed(evt);
             }
         });
+        getContentPane().add(btnPatients, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 182, -1, -1));
 
         btnConsultations.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnConsultations.setText("Gérer les consultations ");
@@ -94,6 +104,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnConsultationsActionPerformed(evt);
             }
         });
+        getContentPane().add(btnConsultations, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 182, -1, -1));
 
         btnCategories.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnCategories.setText("Gérer les catégories ");
@@ -102,6 +113,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnCategoriesActionPerformed(evt);
             }
         });
+        getContentPane().add(btnCategories, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 182, -1, -1));
 
         btnMonthlyReport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnMonthlyReport.setText(" Voir rapport mensuel");
@@ -110,6 +122,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnMonthlyReportActionPerformed(evt);
             }
         });
+        getContentPane().add(btnMonthlyReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 269, -1, -1));
 
         btnPaymentReport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPaymentReport.setText("Rapport des paiements");
@@ -118,6 +131,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnPaymentReportActionPerformed(evt);
             }
         });
+        getContentPane().add(btnPaymentReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(361, 269, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
@@ -128,6 +142,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(473, 327, -1, -1));
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setText("Gérer Mon Profile");
@@ -136,95 +151,20 @@ public class AdminDashboard extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel2.setText(" Connecté en tant que : ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 52, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(btnMonthlyReport)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnPaymentReport)
-                .addGap(76, 76, 76))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(25, 25, 25))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(btnMedecins)
-                .addGap(41, 41, 41)
-                .addComponent(btnAssistants)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(155, 155, 155)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAdminName, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPatients)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnConsultations)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCategories)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblAdminName, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnMedecins)
-                    .addComponent(btnAssistants)
-                    .addComponent(jButton2))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel7)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPatients)
-                    .addComponent(btnConsultations)
-                    .addComponent(btnCategories))
-                .addGap(26, 26, 26)
-                .addComponent(jLabel10)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnMonthlyReport)
-                    .addComponent(btnPaymentReport))
-                .addGap(31, 31, 31)
-                .addComponent(jButton1)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
+        btnAdmin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAdmin.setText("Gérer les admin");
+        btnAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdminActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 103, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -284,6 +224,12 @@ public class AdminDashboard extends javax.swing.JFrame {
     this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
+        // TODO add your handling code here:
+        new ManageAdminsPanel(utilisateur).setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnAdminActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -311,6 +257,7 @@ java.awt.EventQueue.invokeLater(() -> {
     }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnAssistants;
     private javax.swing.JButton btnCategories;
     private javax.swing.JButton btnConsultations;
