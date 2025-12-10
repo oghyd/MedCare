@@ -302,7 +302,9 @@ public boolean markAsUnpaid(int consultationId, LocalDate datePaiement) throws S
 
     @Override
     public int countConsultationsForMonth(int year, int month) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM consultation WHERE YEAR(date_consultation) = ? AND MONTH(date_consultation) = ? AND paid = 1";
+String sql = "SELECT COUNT(*) FROM consultation " +
+             "WHERE YEAR(date_paiement) = ? AND MONTH(date_paiement) = ? " +
+             "AND paid = 1";
         try (java.sql.Connection conn = Connection.connect();
              PreparedStatement pstm = conn.prepareStatement(sql)) {
 
@@ -328,7 +330,8 @@ public boolean markAsUnpaid(int consultationId, LocalDate datePaiement) throws S
          * Below we use consultation.prix because the model has prix.
          */
         String sql = "SELECT COALESCE(SUM(prix), 0) FROM consultation " +
-                     "WHERE YEAR(date_consultation) = ? AND MONTH(date_consultation) = ? AND paid = 1";
+             "WHERE YEAR(date_paiement) = ? AND MONTH(date_paiement) = ? " +
+             "AND paid = 1";
 
         try (java.sql.Connection conn = Connection.connect();
              PreparedStatement pstm = conn.prepareStatement(sql)) {
@@ -350,14 +353,11 @@ public boolean markAsUnpaid(int consultationId, LocalDate datePaiement) throws S
         /*
          * Same as above: use consultation.prix (model stores prix).
          */
-        String sql =
-    "SELECT date_paiement AS jour, COALESCE(SUM(prix), 0) AS total " +
-    "FROM consultation " +
-    "WHERE paid = 1 " +
-    "AND YEAR(date_paiement) = ? " +
-    "AND MONTH(date_paiement) = ? " +
-    "GROUP BY date_paiement " +
-    "ORDER BY date_paiement";
+        String sql = "SELECT date_paiement AS jour, COALESCE(SUM(prix), 0) AS total " +
+             "FROM consultation " +
+             "WHERE YEAR(date_paiement) = ? AND MONTH(date_paiement) = ? " +
+             "AND paid = 1 " +
+             "GROUP BY date_paiement ORDER BY date_paiement";
 
 
         LinkedHashMap<LocalDate, Double> map = new LinkedHashMap<>();
