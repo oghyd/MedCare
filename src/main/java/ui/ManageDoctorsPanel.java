@@ -281,12 +281,19 @@ public class ManageDoctorsPanel extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         String nom = JOptionPane.showInputDialog(this, "Nom :");
-        if (nom == null) return;
+    if (nom == null) return;
 
     String prenom = JOptionPane.showInputDialog(this, "Prénom :");
+    if (prenom == null) return;
+
     String login = JOptionPane.showInputDialog(this, "Login :");
+    if (login == null) return;
+
     String password = JOptionPane.showInputDialog(this, "Mot de passe :");
+    if (password == null) return;
+
     String specialite = JOptionPane.showInputDialog(this, "Spécialité :");
+    if (specialite == null) return;
 
     try {
         Utilisateur med = new Utilisateur();
@@ -326,11 +333,24 @@ public class ManageDoctorsPanel extends javax.swing.JFrame {
         if (nom == null) return;
 
         String prenom = JOptionPane.showInputDialog(this, "Prénom :", med.getPrenom());
+        if (prenom == null) return;
+
+        String login = JOptionPane.showInputDialog(this, "Login :", med.getLogin());
+        if (login == null) return;
+
+        String pass = JOptionPane.showInputDialog(this, "Mot de passe :", med.getPassword());
+        if (pass == null) return;
+
         String specialite = JOptionPane.showInputDialog(this, "Spécialité :", med.getSpecialite());
+        if (specialite == null) return;
+
         String dispoStr = JOptionPane.showInputDialog(this, "Disponible (oui/non) :", med.isDisponible() ? "oui" : "non");
+        if (dispoStr == null) return;
 
         med.setNom(nom);
         med.setPrenom(prenom);
+        med.setLogin(login);
+        med.setPassword(pass);
         med.setSpecialite(specialite);
         med.setDisponible(dispoStr.equalsIgnoreCase("oui"));
 

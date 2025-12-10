@@ -13,10 +13,9 @@ import model.Utilisateur;
  */
 public class AdminDashboard extends javax.swing.JFrame {
     
-     private static final java.util.logging.Logger logger =
-            java.util.logging.Logger.getLogger(AdminDashboard.class.getName());
-
-    private final Utilisateur utilisateur; // Admin connecté
+     private static final java.util.logging.Logger logger =java.util.logging.Logger.getLogger(AdminDashboard.class.getName());
+     private final Utilisateur utilisateur; // Admin connecté
+     private javax.swing.JButton btnProfile;
 
     public AdminDashboard(Utilisateur u) {
         this.utilisateur = u;
@@ -47,6 +46,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         btnMonthlyReport = new javax.swing.JButton();
         btnPaymentReport = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,8 +55,9 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(51, 0, 255));
         jLabel1.setText("Espace Administrateur");
 
-        lblAdminName.setText(" Connecté en tant que : ");
+        lblAdminName.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
 
+        btnMedecins.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnMedecins.setText("Gérer les médecins");
         btnMedecins.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -63,6 +65,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
+        btnAssistants.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAssistants.setText("Gérer les assistant");
         btnAssistants.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,12 +73,13 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("────────────────────── Gestion Médicale ───────────────────────");
+        jLabel7.setText("─────────────────────────── Gestion Médicale ─────────────────────────");
 
-        jLabel8.setText("──────────────────── Gestion du Personnel ──────────────────────");
+        jLabel8.setText("──────────────────────────── Gestion du Personnel ──────────────────────────");
 
-        jLabel10.setText("──────────────────  Rapports & Statistiques ─────────────────────");
+        jLabel10.setText("────────────────────────  Rapports & Statistiques ────────────────────────────");
 
+        btnPatients.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPatients.setText("Gérer les patients");
         btnPatients.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,6 +87,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
+        btnConsultations.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnConsultations.setText("Gérer les consultations ");
         btnConsultations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +95,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
+        btnCategories.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnCategories.setText("Gérer les catégories ");
         btnCategories.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,6 +103,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
+        btnMonthlyReport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnMonthlyReport.setText(" Voir rapport mensuel");
         btnMonthlyReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,6 +111,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
+        btnPaymentReport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPaymentReport.setText("Rapport des paiements");
         btnPaymentReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +120,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         });
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 51, 0));
         jButton1.setText("Déconnexion ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -120,65 +129,85 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton2.setText("Gérer Mon Profile");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel2.setText(" Connecté en tant que : ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(btnMedecins)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAssistants, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(86, 86, 86))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAdminName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(92, 92, 92))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(btnPatients)
-                .addGap(18, 18, 18)
-                .addComponent(btnConsultations)
-                .addGap(18, 18, 18)
-                .addComponent(btnCategories)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(btnMonthlyReport)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnPaymentReport)
-                .addGap(72, 72, 72))
+                .addGap(76, 76, 76))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(25, 25, 25))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(btnMedecins)
+                .addGap(41, 41, 41)
+                .addComponent(btnAssistants)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(155, 155, 155)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblAdminName, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPatients)
+                        .addGap(26, 26, 26)
+                        .addComponent(btnConsultations)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCategories)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(lblAdminName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblAdminName, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMedecins)
-                    .addComponent(btnAssistants))
+                    .addComponent(btnAssistants)
+                    .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
@@ -186,15 +215,15 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addComponent(btnPatients)
                     .addComponent(btnConsultations)
                     .addComponent(btnCategories))
-                .addGap(20, 20, 20)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnMonthlyReport)
                     .addComponent(btnPaymentReport))
-                .addGap(37, 37, 37)
+                .addGap(31, 31, 31)
                 .addComponent(jButton1)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -249,6 +278,12 @@ public class AdminDashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        new UserProfilePanel(utilisateur).setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -284,8 +319,10 @@ java.awt.EventQueue.invokeLater(() -> {
     private javax.swing.JButton btnPatients;
     private javax.swing.JButton btnPaymentReport;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel lblAdminName;

@@ -265,7 +265,7 @@ private void searchAssistants() {
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         // TODO add your handling code here:
-        searchAssistants();
+        loadAssistants();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -277,66 +277,70 @@ private void searchAssistants() {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         String nom = JOptionPane.showInputDialog(this, "Nom :");
-        if (nom == null) return;
+    if (nom == null) return;
 
-        String prenom = JOptionPane.showInputDialog(this, "Prénom :");
-        String login = JOptionPane.showInputDialog(this, "Login :");
-        String password = JOptionPane.showInputDialog(this, "Mot de passe :");
+    String prenom = JOptionPane.showInputDialog(this, "Prénom :");
+    String login = JOptionPane.showInputDialog(this, "Login :");
+    String password = JOptionPane.showInputDialog(this, "Mot de passe :");
 
-        try {
-            Utilisateur a = new Utilisateur();
-            a.setNom(nom);
-            a.setPrenom(prenom);
-            a.setLogin(login);
-            a.setPassword(password);
-            a.setRole(Role.ASSISTANT);
+    try {
+        Utilisateur a = new Utilisateur();
+        a.setNom(nom);
+        a.setPrenom(prenom);
+        a.setLogin(login);
+        a.setPassword(password);
+        a.setRole(Role.ASSISTANT);
+        a.setSpecialite(null);
+        a.setDisponible(true); // ✔ obligatoire
 
-            if (utilisateurDAO.createUtilisateur(a)) {
-                JOptionPane.showMessageDialog(this, "Assistant ajouté !");
-                loadAssistants();
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erreur ajout !");
-            e.printStackTrace();
+        if (utilisateurDAO.createUtilisateur(a)) {
+            JOptionPane.showMessageDialog(this, "Assistant ajouté !");
+            loadAssistants();
         }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur ajout !");
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-        int row = tableAssistants.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Sélectionnez un assistant.");
-            return;
+         int row = tableAssistants.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionnez un assistant.");
+        return;
+    }
+
+    int id = (int) tableAssistants.getValueAt(row, 0);
+
+    try {
+        Utilisateur u = utilisateurDAO.findAssistantById(id);
+
+        String nom = JOptionPane.showInputDialog(this, "Nom :", u.getNom());
+        if (nom == null) return;
+
+        String prenom = JOptionPane.showInputDialog(this, "Prénom :", u.getPrenom());
+        String login = JOptionPane.showInputDialog(this, "Login :", u.getLogin());
+        String pass = JOptionPane.showInputDialog(this, "Mot de passe :", u.getPassword());
+
+        u.setNom(nom);
+        u.setPrenom(prenom);
+        u.setLogin(login);
+        u.setPassword(pass);
+        u.setRole(Role.ASSISTANT);
+        u.setSpecialite(null);
+        u.setDisponible(true);
+
+        if (utilisateurDAO.updateUtilisateur(u)) {
+            JOptionPane.showMessageDialog(this, "Assistant modifié !");
+            loadAssistants();
         }
 
-        int id = (int) tableAssistants.getValueAt(row, 0);
-
-        try {
-            Utilisateur u = utilisateurDAO.findAssistantById(id);
-
-            String nom = JOptionPane.showInputDialog(this, "Nom :", u.getNom());
-            if (nom == null) return;
-
-            String prenom = JOptionPane.showInputDialog(this, "Prénom :", u.getPrenom());
-            String login = JOptionPane.showInputDialog(this, "Login :", u.getLogin());
-            String pass = JOptionPane.showInputDialog(this, "Mot de passe :", u.getPassword());
-
-            u.setNom(nom);
-            u.setPrenom(prenom);
-            u.setLogin(login);
-            u.setPassword(pass);
-
-            if (utilisateurDAO.updateUtilisateur(u)) {
-                JOptionPane.showMessageDialog(this, "Assistant modifié !");
-                loadAssistants();
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erreur modification !");
-            e.printStackTrace();
-        }
-
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erreur modification !");
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed

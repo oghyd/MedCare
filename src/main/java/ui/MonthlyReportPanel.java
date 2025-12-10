@@ -62,34 +62,43 @@ public class MonthlyReportPanel extends javax.swing.JFrame {
         e.printStackTrace();
     }
 }
-    private void loadFullReport() {
+private void loadFullReport() {
     try {
-        // Appel direct DAO pour récupérer tout
-        java.util.LinkedList<model.Consultation> all = new ConsultationDAOImpl().findAllConsultations();
+        // Récupération de toutes les consultations
+        java.util.LinkedList<model.Consultation> all = 
+                new ConsultationDAOImpl().findAllConsultations();
 
         double totalRevenue = 0;
-        int totalConsultations = all.size();
+        int totalConsultations = 0;
 
+        // Map pour grouper les revenus par jour
         java.util.Map<java.time.LocalDate, Double> map = new java.util.HashMap<>();
 
         for (model.Consultation c : all) {
+            // On ne considère que les consultations PAYÉES avec une date de paiement
             if (c.isPaid() && c.getDatePaiement() != null) {
-                totalRevenue += c.getPrix();
 
-                map.put(c.getDatePaiement(),
-                        map.getOrDefault(c.getDatePaiement(), 0.0) + c.getPrix());
+                totalRevenue += c.getPrix();
+                totalConsultations++;
+
+                java.time.LocalDate d = c.getDatePaiement();
+                map.put(d, map.getOrDefault(d, 0.0) + c.getPrix());
             }
         }
 
-        // Remplir labels
+        // Mise à jour des labels
         lblTotalConsultations.setText(String.valueOf(totalConsultations));
         lblTotalRevenue.setText(totalRevenue + " MAD");
 
-        // Remplir tableau
+        // Remplir le tableau
         DefaultTableModel model = (DefaultTableModel) tableDailyRevenue.getModel();
         model.setRowCount(0);
 
-        for (java.time.LocalDate d : map.keySet()) {
+        // Tri des dates (sinon désordre)
+        java.util.List<java.time.LocalDate> sorted = new java.util.ArrayList<>(map.keySet());
+        java.util.Collections.sort(sorted);
+
+        for (java.time.LocalDate d : sorted) {
             model.addRow(new Object[]{
                     d,
                     map.get(d)
