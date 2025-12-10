@@ -203,7 +203,15 @@ public class PaymentReportPanel extends javax.swing.JFrame {
             new String [] {
                 "ID Consultation", "Patient", "Date Paiement", "Montant (MAD)"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tablePayments);
 
         jLabel8.setText("───────────────────────────────────────────────────────");

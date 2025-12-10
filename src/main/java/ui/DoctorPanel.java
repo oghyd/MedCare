@@ -202,6 +202,7 @@ public class DoctorPanel extends javax.swing.JFrame {
         lblTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1000, 700));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -209,28 +210,31 @@ public class DoctorPanel extends javax.swing.JFrame {
                 txtSearchActionPerformed(evt);
             }
         });
-        getContentPane().add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 76, -1));
+        getContentPane().add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 130, 76, -1));
 
+        Rechercherpatient.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Rechercherpatient.setText("Rechercher patient");
-        getContentPane().add(Rechercherpatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 109, -1));
+        getContentPane().add(Rechercherpatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 130, -1));
 
+        btnLoad.setBackground(new java.awt.Color(51, 153, 0));
+        btnLoad.setForeground(new java.awt.Color(0, 0, 0));
         btnLoad.setText("Rechercher");
         btnLoad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoadActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLoad, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 100, -1, -1));
+        getContentPane().add(btnLoad, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 130, -1, -1));
 
         lblDoctorLabel.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         lblDoctorLabel.setText("Espace Dr");
-        getContentPane().add(lblDoctorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 70, 20));
+        getContentPane().add(lblDoctorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 70, 20));
 
         lblDoctorName.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        getContentPane().add(lblDoctorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 150, 20));
+        getContentPane().add(lblDoctorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, 150, 20));
 
         jLabel3.setText("───────────────────────────     Consultations  du jour  ──────────────────────────");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, -1, -1));
 
         tableDaily.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -244,7 +248,7 @@ public class DoctorPanel extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -264,25 +268,25 @@ public class DoctorPanel extends javax.swing.JFrame {
             tableDaily.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 563, 157));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 190, 563, 157));
 
         jLabel4.setText("───────────────────────────    Notes médicales     ────────────────────────────");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 600, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 360, 600, -1));
 
         lblPatientName.setText("Patient ");
-        getContentPane().add(lblPatientName, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 360, 159, -1));
+        getContentPane().add(lblPatientName, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 380, 159, -1));
 
         jLabel5.setText("Statut");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 450, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 470, -1, -1));
 
         lblCategory.setText("Catégorie");
-        getContentPane().add(lblCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 390, 159, -1));
+        getContentPane().add(lblCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 410, 159, -1));
 
         lblDate.setText("Date");
-        getContentPane().add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 420, 122, -1));
+        getContentPane().add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 440, 122, -1));
 
         jLabel8.setText("Notes");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 480, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 500, -1, -1));
 
         btnCancelConsultation.setForeground(new java.awt.Color(153, 51, 0));
         btnCancelConsultation.setText("ANNULEE");
@@ -291,7 +295,7 @@ public class DoctorPanel extends javax.swing.JFrame {
                 btnCancelConsultationActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCancelConsultation, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 580, -1, -1));
+        getContentPane().add(btnCancelConsultation, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 600, -1, -1));
 
         btnMarkDone.setForeground(new java.awt.Color(0, 0, 153));
         btnMarkDone.setText("TERMINEE");
@@ -300,7 +304,7 @@ public class DoctorPanel extends javax.swing.JFrame {
                 btnMarkDoneActionPerformed(evt);
             }
         });
-        getContentPane().add(btnMarkDone, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 580, -1, -1));
+        getContentPane().add(btnMarkDone, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 600, -1, -1));
 
         btnSave.setForeground(new java.awt.Color(0, 153, 51));
         btnSave.setText("ENREGISTRER");
@@ -309,7 +313,7 @@ public class DoctorPanel extends javax.swing.JFrame {
                 btnSaveActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 580, -1, -1));
+        getContentPane().add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 600, -1, -1));
 
         comboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PLANIFIEE ", "TERMINEE ", "ANNULEE" }));
         comboStatus.addActionListener(new java.awt.event.ActionListener() {
@@ -317,21 +321,23 @@ public class DoctorPanel extends javax.swing.JFrame {
                 comboStatusActionPerformed(evt);
             }
         });
-        getContentPane().add(comboStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 440, -1, -1));
+        getContentPane().add(comboStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 460, -1, -1));
 
         txtDescription.setColumns(20);
         txtDescription.setRows(5);
         jScrollPane2.setViewportView(txtDescription);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 480, 249, -1));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 500, 249, -1));
 
+        jButton1.setBackground(new java.awt.Color(0, 102, 153));
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setText("Raffraichir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 100, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 130, -1, -1));
 
         btnBack.setText("Retour");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -339,15 +345,15 @@ public class DoctorPanel extends javax.swing.JFrame {
                 btnBackActionPerformed(evt);
             }
         });
-        getContentPane().add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 580, 75, -1));
+        getContentPane().add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 600, 75, -1));
 
         jLabel1.setText("──────────────────────────────────────────────────────────────────────");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 600, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 600, -1));
 
-        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitle.setForeground(new java.awt.Color(51, 0, 255));
         lblTitle.setText("CONSULTATIONS");
-        getContentPane().add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
+        getContentPane().add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

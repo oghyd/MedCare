@@ -51,15 +51,16 @@ public class AdminDashboard extends javax.swing.JFrame {
         btnAdmin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1100, 520));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 0, 255));
         jLabel1.setText("Espace Administrateur");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 0, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, -1));
 
         lblAdminName.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        getContentPane().add(lblAdminName, new org.netbeans.lib.awtextra.AbsoluteConstraints(173, 54, 170, 18));
+        getContentPane().add(lblAdminName, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 170, 18));
 
         btnMedecins.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnMedecins.setText("Gérer les médecins");
@@ -68,7 +69,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnMedecinsActionPerformed(evt);
             }
         });
-        getContentPane().add(btnMedecins, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 103, -1, -1));
+        getContentPane().add(btnMedecins, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, -1, -1));
 
         btnAssistants.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAssistants.setText("Gérer les assistant");
@@ -77,16 +78,19 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnAssistantsActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAssistants, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 103, -1, -1));
+        getContentPane().add(btnAssistants, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, -1, -1));
 
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("──────────────────────────────── Gestion Médicale ─────────────────────────");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 148, 606, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 606, -1));
 
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("─────────────────────────────── Gestion du Personnel ──────────────────────────");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 78, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, 140, 610, -1));
 
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("────────────────────────  Rapports & Statistiques ────────────────────────────");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 235, 606, -1));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(256, 310, 610, -1));
 
         btnPatients.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPatients.setText("Gérer les patients");
@@ -95,7 +99,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnPatientsActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPatients, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 182, -1, -1));
+        getContentPane().add(btnPatients, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, -1, -1));
 
         btnConsultations.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnConsultations.setText("Gérer les consultations ");
@@ -104,7 +108,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnConsultationsActionPerformed(evt);
             }
         });
-        getContentPane().add(btnConsultations, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 182, -1, -1));
+        getContentPane().add(btnConsultations, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 260, -1, -1));
 
         btnCategories.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnCategories.setText("Gérer les catégories ");
@@ -113,7 +117,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnCategoriesActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCategories, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 182, -1, -1));
+        getContentPane().add(btnCategories, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 260, -1, -1));
 
         btnMonthlyReport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnMonthlyReport.setText(" Voir rapport mensuel");
@@ -122,7 +126,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnMonthlyReportActionPerformed(evt);
             }
         });
-        getContentPane().add(btnMonthlyReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 269, -1, -1));
+        getContentPane().add(btnMonthlyReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, -1, -1));
 
         btnPaymentReport.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnPaymentReport.setText("Rapport des paiements");
@@ -131,18 +135,19 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnPaymentReportActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPaymentReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(361, 269, -1, -1));
+        getContentPane().add(btnPaymentReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 350, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 51, 0));
         jButton1.setText("Déconnexion ");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(473, 327, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 430, -1, -1));
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setText("Gérer Mon Profile");
@@ -151,11 +156,11 @@ public class AdminDashboard extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 50, -1, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 90, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel2.setText(" Connecté en tant que : ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 52, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 90, -1, -1));
 
         btnAdmin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAdmin.setText("Gérer les admin");
@@ -164,7 +169,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnAdminActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 103, -1, -1));
+        getContentPane().add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 170, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
