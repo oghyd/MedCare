@@ -11,7 +11,6 @@ import dao.interfaces.CategorieConsultationDAO;
 import dao.interfaces.ConsultationDAO;
 import dao.interfaces.PatientDAO;
 
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

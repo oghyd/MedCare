@@ -9,7 +9,6 @@ import dao.impl.CategorieConsultationDAOImpl;
 
 import model.CategorieConsultation;
 import model.Utilisateur;
-import model.Role;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

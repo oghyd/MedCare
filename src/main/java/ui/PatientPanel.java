@@ -8,7 +8,10 @@ import dao.interfaces.PatientDAO;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import model.Patient;
-import model.Role;
+
+import static model.Role.ADMIN;
+import static model.Role.ASSISTANT;
+import static model.Role.MEDECIN;
 import model.Utilisateur;
 
 /**
@@ -37,12 +40,10 @@ public class PatientPanel extends javax.swing.JFrame {
 }
     
 private void returnToDashboard() {
-    if (utilisateur.getRole() == Role.ADMIN) {
-        new AdminDashboard(utilisateur).setVisible(true);
-    } else if(utilisateur.getRole() == Role.ASSISTANT) {
-        new AssistantDashboard(utilisateur).setVisible(true);
-    }else if (utilisateur.getRole() == Role.MEDECIN){
-        new DoctorDashboard(utilisateur).setVisible(true);
+   switch (utilisateur.getRole()) {
+        case ADMIN -> new AdminDashboard(utilisateur).setVisible(true);
+        case ASSISTANT -> new AssistantDashboard(utilisateur).setVisible(true);
+        case MEDECIN -> new DoctorDashboard(utilisateur).setVisible(true);
     }
     this.dispose();
 }

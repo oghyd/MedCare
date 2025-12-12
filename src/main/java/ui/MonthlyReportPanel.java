@@ -8,6 +8,10 @@ import Service.ReportService;
 import dao.impl.ConsultationDAOImpl;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.Role;
+import static model.Role.ADMIN;
+import static model.Role.ASSISTANT;
+import static model.Role.MEDECIN;
 import model.Utilisateur;
 import report.dto.DailyRevenueDTO;
 import report.dto.MonthlyReportDTO;
@@ -263,9 +267,13 @@ private void loadFullReport() {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
-        new AdminDashboard(utilisateur).setVisible(true);
-        this.dispose();
+         switch (utilisateur.getRole()) {
+        case ADMIN -> new AdminDashboard(utilisateur).setVisible(true);
+        case ASSISTANT -> new AssistantDashboard(utilisateur).setVisible(true);
+        case MEDECIN -> new DoctorDashboard(utilisateur).setVisible(true);
+    }
+
+    this.dispose();
 
     }//GEN-LAST:event_btnBackActionPerformed
 

@@ -46,14 +46,13 @@ public class DoctorDashboard extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(850, 420));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblDoctorName.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         getContentPane().add(lblDoctorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 190, 20));
 
         btnMyConsultations.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnMyConsultations.setText("Consulter mes consultations");
+        btnMyConsultations.setText("Mes consultations");
         btnMyConsultations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMyConsultationsActionPerformed(evt);

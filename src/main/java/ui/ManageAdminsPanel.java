@@ -113,7 +113,6 @@ public class ManageAdminsPanel extends javax.swing.JFrame {
         lblAdminName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 700));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setText("────────────────────────────────────────────────────────");
