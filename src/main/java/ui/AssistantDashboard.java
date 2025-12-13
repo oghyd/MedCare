@@ -49,7 +49,6 @@ public class AssistantDashboard extends javax.swing.JFrame {
         jButton4.setText("jButton4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 510));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 0, 255));
@@ -83,7 +82,7 @@ public class AssistantDashboard extends javax.swing.JFrame {
         });
 
         btnPayments.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnPayments.setText("Paiements");
+        btnPayments.setText("Gérer les paiements");
         btnPayments.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPaymentsActionPerformed(evt);

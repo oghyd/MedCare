@@ -61,35 +61,43 @@ public class DoctorPanel extends javax.swing.JFrame {
         });
 
          // charger toutes les consultations au démarrage
-        loadAllConsultations();
+        loadMyConsultations();
 
     }
-      private void loadAllConsultations() {
-        try {
-            LinkedList<Consultation> list = consultationDAO.findAllConsultations();
-            DefaultTableModel model = (DefaultTableModel) tableDaily.getModel();
-            model.setRowCount(0);
+private void loadMyConsultations() {
+    try {
+        int medecinId = utilisateur.getId(); // ID du médecin connecté
 
-            for (Consultation c : list) {
-                Patient p = patientDAO.findPatientById(c.getIdPatient());
-                String patientFullName = p.getNom() + " " + p.getPrenom();
-                String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategorie()).getCategorie();
+        LinkedList<Consultation> list =
+                consultationDAO.findByMedecin(medecinId);
 
-                model.addRow(new Object[]{
-                    c.getIdC(),                 // ID
-                    c.getDateConsultation(),    // Date
-                    patientFullName,            // Patient
-                    categorieName,              // Catégorie
-                    c.getStatus(),              // Statut
-                    (c.isPaid() ? "OUI" : "NON"), // Payé
-                    c.getPrix()                 // Prix
-                });
-            }
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Erreur chargement initial", ex);
-            JOptionPane.showMessageDialog(this, "Erreur lors du chargement initial.");
+        DefaultTableModel model = (DefaultTableModel) tableDaily.getModel();
+        model.setRowCount(0);
+
+        for (Consultation c : list) {
+            Patient p = patientDAO.findPatientById(c.getIdPatient());
+            String patientFullName = p.getNom() + " " + p.getPrenom();
+            String categorieName =
+                    categorieDAO.findCategorieConsultationById(
+                            c.getIdcategorie()).getCategorie();
+
+            model.addRow(new Object[]{
+                c.getIdC(),
+                c.getDateConsultation(),
+                patientFullName,
+                categorieName,
+                c.getStatus(),
+                (c.isPaid() ? "OUI" : "NON"),
+                c.getPrix()
+            });
         }
+
+    } catch (Exception ex) {
+        logger.log(Level.SEVERE, "Erreur chargement consultations médecin", ex);
+        JOptionPane.showMessageDialog(this,
+                "Erreur lors du chargement des consultations.");
     }
+}
       /**
      * Charge et affiche les détails (zone notes) de la consultation sélectionnée.
      * Affiche : patient nom/prenom, catégorie, date, statut, notes.
@@ -123,45 +131,42 @@ public class DoctorPanel extends javax.swing.JFrame {
     /**
      * Recherche par nom/prénom (si champ vide => affiche toutes les consultations).
      */
-    private void searchByPatientKeyword(String keyword) {
-        try {
-            DefaultTableModel model = (DefaultTableModel) tableDaily.getModel();
-            model.setRowCount(0);
+   private void searchByPatientKeyword(String keyword) {
+    try {
+        DefaultTableModel model = (DefaultTableModel) tableDaily.getModel();
+        model.setRowCount(0);
 
-            LinkedList<Patient> patients = patientDAO.findAllPatients();
+        int medecinId = utilisateur.getId();
+        LinkedList<Consultation> list = consultationDAO.findByMedecin(medecinId);
 
-            for (Patient p : patients) {
-                String fullName = (p.getNom() + " " + p.getPrenom()).toLowerCase();
+        for (Consultation c : list) {
+            Patient p = patientDAO.findPatientById(c.getIdPatient());
+            String fullName = (p.getNom() + " " + p.getPrenom()).toLowerCase();
 
-                if (!keyword.isEmpty()) {
-                    if (!p.getNom().toLowerCase().contains(keyword)
-                            && !p.getPrenom().toLowerCase().contains(keyword)
-                            && !fullName.contains(keyword)) {
-                        continue;
-                    }
-                }
-
-                LinkedList<Consultation> list = consultationDAO.findByPatient(p.getId());
-
-                for (Consultation c : list) {
-                    String categorieName = categorieDAO.findCategorieConsultationById(c.getIdcategorie()).getCategorie();
-
-                    model.addRow(new Object[]{
-                        c.getIdC(),
-                        c.getDateConsultation(),
-                        p.getNom() + " " + p.getPrenom(),
-                        categorieName,
-                        c.getStatus(),
-                        (c.isPaid() ? "OUI" : "NON"),
-                        c.getPrix()
-                    });
-                }
+            if (!keyword.isEmpty() && !fullName.contains(keyword)) {
+                continue;
             }
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Erreur recherche patient", ex);
-            JOptionPane.showMessageDialog(this, "Erreur recherche patient !");
+
+            String categorieName = categorieDAO
+                    .findCategorieConsultationById(c.getIdcategorie())
+                    .getCategorie();
+
+            model.addRow(new Object[]{
+                c.getIdC(),
+                c.getDateConsultation(),
+                p.getNom() + " " + p.getPrenom(),
+                categorieName,
+                c.getStatus(),
+                c.isPaid() ? "OUI" : "NON",
+                c.getPrix()
+            });
         }
+
+    } catch (Exception ex) {
+        logger.log(Level.SEVERE, "Erreur recherche", ex);
+        JOptionPane.showMessageDialog(this, "Erreur recherche patient !");
     }
+}
 
 
    
@@ -351,7 +356,7 @@ public class DoctorPanel extends javax.swing.JFrame {
 
         lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitle.setForeground(new java.awt.Color(51, 0, 255));
-        lblTitle.setText("CONSULTATIONS");
+        lblTitle.setText("Gestion des consultations");
         getContentPane().add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, -1));
 
         pack();
@@ -379,7 +384,7 @@ public class DoctorPanel extends javax.swing.JFrame {
             c.setStatus(comboStatus.getSelectedItem().toString());
             consultationDAO.updateConsultation(c);
             JOptionPane.showMessageDialog(this, "Notes médicales enregistrées.");
-            loadAllConsultations();
+            loadMyConsultations();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Erreur enregistrement", ex);
             JOptionPane.showMessageDialog(this, "Erreur lors de l'enregistrement.");
@@ -405,7 +410,7 @@ public class DoctorPanel extends javax.swing.JFrame {
             c.setStatus("TERMINEE");
             consultationDAO.updateConsultation(c);
             JOptionPane.showMessageDialog(this, "Consultation marquée comme terminée.");
-            loadAllConsultations();
+            loadMyConsultations();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Erreur MAJ statut", ex);
             JOptionPane.showMessageDialog(this, "Erreur lors de la mise à jour.");
@@ -425,7 +430,7 @@ public class DoctorPanel extends javax.swing.JFrame {
             c.setStatus("ANNULEE");
             consultationDAO.updateConsultation(c);
             JOptionPane.showMessageDialog(this, "Consultation annulée.");
-            loadAllConsultations();
+            loadMyConsultations();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Erreur annulation", ex);
             JOptionPane.showMessageDialog(this, "Erreur lors de la mise à jour.");
@@ -435,7 +440,7 @@ public class DoctorPanel extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         txtSearch.setText("");
-        loadAllConsultations();
+        loadMyConsultations();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed

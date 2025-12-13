@@ -280,26 +280,8 @@ public boolean markAsUnpaid(int consultationId, LocalDate datePaiement) throws S
 
     
     
-    @Override
-    public LinkedList<Consultation> findDailyForDoctor(int medecinId, LocalDate date) throws SQLException {
-        String sql = "SELECT * FROM consultation WHERE medecin_id = ? AND date_consultation = ? ORDER BY date_consultation";
-        LinkedList<Consultation> findDailyForDoctorList = new LinkedList<>();
-
-        try (java.sql.Connection conn = Connection.connect();
-             PreparedStatement pstm = conn.prepareStatement(sql)) {
-
-            pstm.setInt(1, medecinId);
-            pstm.setDate(2, Date.valueOf(date));
-            try (ResultSet rs = pstm.executeQuery()) {
-                while (rs.next()) {
-                    findDailyForDoctorList.add(mapResultSetToConsultation(rs));
-                }
-            }
-        }
-
-        return findDailyForDoctorList;
-    }
-
+    
+    
     @Override
     public int countConsultationsForMonth(int year, int month) throws SQLException {
 String sql = "SELECT COUNT(*) FROM consultation " +
@@ -417,6 +399,29 @@ String sql = "SELECT COUNT(*) FROM consultation " +
 
         return c;
     }
-    
+
+    @Override
+public LinkedList<Consultation> findByMedecin(int medecinId) throws SQLException {
+    String sql = "SELECT * FROM consultation " +
+                 "WHERE medecin_id = ? " +
+                 "ORDER BY date_consultation DESC";
+
+    LinkedList<Consultation> list = new LinkedList<>();
+
+    try (java.sql.Connection conn = Connection.connect();
+         PreparedStatement pstm = conn.prepareStatement(sql)) {
+
+        pstm.setInt(1, medecinId);
+
+        try (ResultSet rs = pstm.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapResultSetToConsultation(rs));
+            }
+        }
+    }
+
+    return list;
+}
+
     
 }

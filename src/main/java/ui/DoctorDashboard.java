@@ -52,7 +52,7 @@ public class DoctorDashboard extends javax.swing.JFrame {
         getContentPane().add(lblDoctorName, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 190, 20));
 
         btnMyConsultations.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnMyConsultations.setText("Mes consultations");
+        btnMyConsultations.setText("Gérer mes consultations");
         btnMyConsultations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMyConsultationsActionPerformed(evt);
