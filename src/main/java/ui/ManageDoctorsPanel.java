@@ -124,7 +124,7 @@ public class ManageDoctorsPanel extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, -1, -1));
         getContentPane().add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 130, 100, 20));
 
-        btnSearch.setBackground(new java.awt.Color(0, 51, 204));
+        btnSearch.setBackground(new java.awt.Color(0, 153, 51));
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("Rechercher");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -134,7 +134,7 @@ public class ManageDoctorsPanel extends javax.swing.JFrame {
         });
         getContentPane().add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, -1));
 
-        btnRefresh.setBackground(new java.awt.Color(51, 153, 0));
+        btnRefresh.setBackground(new java.awt.Color(0, 0, 255));
         btnRefresh.setForeground(new java.awt.Color(255, 255, 255));
         btnRefresh.setText("Rafraichir");
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {

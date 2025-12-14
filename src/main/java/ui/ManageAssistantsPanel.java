@@ -130,6 +130,8 @@ private void searchAssistants() {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 130, -1, -1));
         getContentPane().add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 130, 92, -1));
 
+        btnSearch.setBackground(new java.awt.Color(0, 153, 51));
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("Rechercher");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,6 +140,8 @@ private void searchAssistants() {
         });
         getContentPane().add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 130, 93, -1));
 
+        btnRefresh.setBackground(new java.awt.Color(0, 0, 255));
+        btnRefresh.setForeground(new java.awt.Color(255, 255, 255));
         btnRefresh.setText("Raffraichir");
         btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
